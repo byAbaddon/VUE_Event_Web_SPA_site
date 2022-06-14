@@ -1,21 +1,12 @@
 <script  setup>
-    const icons = [
-      'mdi-facebook',
-      'mdi-twitter',
-      'mdi-linkedin',
-      'mdi-instagram',
-      ]
-
+const icons = ["mdi-home", "mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"];
 </script>
 
 
 
 <template>
-
   <v-footer
-    class="bg-indigo-lighten-1 text-white text-center d-flex flex-column"
-  >
-
+   class="bg-grey-darken-4 text-white text-center d-flex flex-column">
     <div>
       <v-btn
         v-for="icon in icons"
@@ -27,13 +18,14 @@
     </div>
 
     <div class="text-white pt-0">
- Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+      Orci varius natoque penatibus et magnis dis parturient montes, nascetur
+      ridiculus mus.
     </div>
-
-    <v-divider></v-divider>
+   <v-divider></v-divider>
 
     <div class="text-white">
-     <strong>Vuetify</strong>
+      <strong>Vuetify</strong>
     </div>
+ 
   </v-footer>
 </template>

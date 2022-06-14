@@ -1,19 +1,30 @@
 <template>
-  <div>
-       <v-icon large color="green darken-2" > mdi-domain</v-icon>
-    <h1>This is an HOME page</h1>
-    <v-btn @click="cStore.increment()"     color="error">Test</v-btn>
-    <h2> {{ cStore.count }}</h2>
-    <h2> second:   {{ cStore.count }}</h2>
-    <h4>ready</h4>
-  </div>
+  <v-app>
+    <header-component />
+      <v-main id="main">
+        <router-view />
+      </v-main>
+    <footer-component />
+  </v-app>
   
 </template>
 
 
 <script setup >
-import { useCounterStore } from '@/stores/counter'
-const cStore = useCounterStore()
+import HeaderComponent from '@/components/HeaderComponent'
+import FooterComponent from '@/components/FooterComponent'
+import { defineComponent } from 'vue';
+defineComponent(() => { HeaderComponent, FooterComponent })
+
 
   
 </script>
+
+
+
+<style>
+#main{
+  height: 80%;
+  background: rgb(216, 245, 245);
+}
+</style>
