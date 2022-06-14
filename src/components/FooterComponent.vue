@@ -11,6 +11,7 @@ const icons = ["mdi-home", "mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-i
       <v-btn
         v-for="icon in icons"
         :key="icon"
+        :to="`${icon == 'mdi-home' ? '/' : ''}`"
         class="mx-4 text-white"
         :icon="icon"
         variant="text"
