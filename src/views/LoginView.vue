@@ -2,27 +2,33 @@
   <div class="login">
     <div class="text-center pt-2">
       <h1>You are on one step of awesome events!</h1>
-      <h3 class="">Don't have account? Then just
-         <v-btn variant="text" to="/register" class="text-red text-decoration-underline pr-1"  > Sign-Up!</v-btn>
-      </h3> 
+      <h3 class="">
+        Don't have account? Then just
+        <v-btn
+          variant="text"
+          to="/register"
+          class="text-red text-decoration-underline pr-1"
+        >
+          Sign-Up!</v-btn
+        >
+      </h3>
     </div>
 
     <v-card class="mx-auto" max-width="340">
       <v-card-title class="d-flex justify-center bg-blue-lighten-1">
         <span class="text-white font-weight-bold">SING-IN</span>
       </v-card-title>
-    
-       <v-img
+
+      <v-img
         src="@/assets/images/loginEventPic.jpg"
         lazy-src="@/assets/images/graduation-edit.png"
         cover
-        ></v-img>
-
+      ></v-img>
 
       <v-form class="bg-blue-lighten-3">
         <!-- email   -->
         <v-text-field
-          style="height:100px;"
+          style="height: 100px"
           class="my-0 pa-5 py-5"
           prepend-inner-icon="mdi-email mr-3 mt-1"
           append-icon="mdi-blank"
@@ -39,7 +45,7 @@
 
         <!-- password   -->
         <v-text-field
-          style="height: 100px;"
+          style="height: 100px"
           class="mx-5"
           prepend-inner-icon="mdi-lock mr-3"
           clearable
@@ -55,25 +61,25 @@
         ></v-text-field>
 
         <!-- btnLogin   -->
-        <div class="text-center mt-0 pb-5">
+        <div class="text-center mb-12 pb-12">
           <v-btn
             class="bg-blue white--text"
             :disabled="showProgressCircular"
             elevation="8"
             :loading="showProgressCircular"
             @click="login"
-          >Login
+            >Login
           </v-btn>
         </div>
       </v-form>
     </v-card>
 
     <!-- alert   -->
-    <div >
+    <div>
       <v-alert
-        class="mx-auto mt-9"
-        height="50"
-        width="22.5em"
+        class="mx-auto my-11"
+        height="60"
+        width="30em"
         type="error"
         icon="mdi-alert"
         v-show="showErrorAlert"
@@ -81,7 +87,6 @@
         {{ errorMessage }}
       </v-alert>
     </div>
-
   </div>
 </template>
 
@@ -89,54 +94,59 @@
 <script setup>
 import getUserProfileData from '@/service/getUserProfileData'
 import singUser from '@/service/login'
+import {ref,computed  } from "vue";
 
  
-   let errorMessage = ""
-   let showErrorAlert = false
-   let showProgressCircular = false
-   let showPass = false
-   let pass = "111111"
-   let email = "koko@abv.bg"
+   let errorMessage = ref('')
+   let showErrorAlert = ref(false)
+   let showProgressCircular = ref(false)
+   let showPass = ref(false)
+   let pass = ref('111111')
+   let email = ref('koko@abv.bg')
 
-   let emailRules = [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ]
+let emailRules = ref(computed(() =>
+  [
+    (v) => !!v || "E-mail is required",
+    (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+  ]))
 
-   let passRules = [
+  let passRules = ref(computed(() => 
+      [
       (v) => !!v || "Password is required",
       (v) => (v && v.length > 5) || "Password must be more than 5 chars",
-    ]
+     ]
+   ))
   
 
-     let login = () => {
-      showProgressCircular = true;
+  let login = () => {
+      showProgressCircular.value = true;
       setTimeout(() => (showProgressCircular = false), 3000);
       //invoke login function
-      singUser(email, pass).then(message => {
+      singUser(email.value, pass.value).then(message => {
         if (message == 'success') {
            getUserProfileData().then( (userData) => {   //getUserDataFromRegisterProfile
              const [userName, userPhoto] = userData
-              this.$root.$emit('user-data', userName, userPhoto)   
+              // this.$root.$emit('user-data', userName, userPhoto)   
+              console.log(userName, userPhoto  );
            })
-           this.$router.push('/movies') //redirect to page
+          //  this.$router.push('/movies') //redirect to page
         }else{
-            errorMessage = message
-            showErrorAlert = true;
-            setTimeout(() => (showErrorAlert = false), 3000)
+            errorMessage.value = message
+            showErrorAlert.value = true;
+            setTimeout(() => (showErrorAlert.value = false), 3000)
         }
         
       });
     }
+
+
  
 </script>
 
 
 <style scoped>
-
-.login{
+.login {
   background: url("");
-  background: linear-gradient(  #c0d9ff, #ffffffc9);
+  background: linear-gradient(#c0d9ff, #ffffffc9);
 }
-
 </style>
