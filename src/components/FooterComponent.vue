@@ -5,8 +5,8 @@ const icons = ["mdi-home", "mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-i
 
 
 <template>
-  <v-footer
-   class="bg-grey-darken-4 text-white text-center d-flex flex-column">
+<v-footer 
+   class="bg-blue-grey-darken-4 text-white text-center d-flex flex-column">
     <div>
       <v-btn
         v-for="icon in icons"
