@@ -25,6 +25,6 @@ defineComponent(() => { HeaderComponent, FooterComponent })
 <style>
 #main{
   height: 80%;
-  background: rgb(216, 245, 245);
+  background: rgb(240, 243, 241);
 }
 </style>
