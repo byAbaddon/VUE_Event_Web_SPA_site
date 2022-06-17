@@ -1,5 +1,5 @@
 <template >
-  <div class="login">
+  <div class="login" style="background: linear-gradient(#c0d9ff, #ffffffc9)">
     <div class="text-center pt-2">
       <h1>You are on one step of awesome events!</h1>
       <h3 class="">
@@ -91,62 +91,59 @@
 </template>
 
 
-<script setup>
-import getUserProfileData from '@/service/getUserProfileData'
-import singUser from '@/service/login'
-import {ref,computed  } from "vue";
+<script >
+import getUserProfileData from "@/service/getUserProfileData";
+import singUser from "@/service/login";
+import { ref, computed } from "vue";
+import { useRouter, useRoute } from 'vue-router'
 
- 
-   let errorMessage = ref('')
-   let showErrorAlert = ref(false)
-   let showProgressCircular = ref(false)
-   let showPass = ref(false)
-   let pass = ref('111111')
-   let email = ref('koko@abv.bg')
+export default {
+  setup() {
+    let errorMessage = ref("");
+    let showErrorAlert = ref(false);
+    let showProgressCircular = ref(false);
+    let showPass = ref(false);
+    let pass = ref("111111");
+    let email = ref("koko@abv.bg");
+    const router = useRouter()
 
-let emailRules = ref(computed(() =>
-  [
-    (v) => !!v || "E-mail is required",
-    (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-  ]))
 
-  let passRules = ref(computed(() => 
-      [
-      (v) => !!v || "Password is required",
-      (v) => (v && v.length > 5) || "Password must be more than 5 chars",
-     ]
-   ))
-  
+    let emailRules = ref(
+      computed(() => [
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      ])
+    );
 
-  let login = () => {
+    let passRules = ref(
+      computed(() => [
+        (v) => !!v || "Password is required",
+        (v) => (v && v.length > 5) || "Password must be more than 5 chars",
+      ])
+    );
+
+    let login = () => {
       showProgressCircular.value = true;
       setTimeout(() => (showProgressCircular = false), 3000);
       //invoke login function
-      singUser(email.value, pass.value).then(message => {
-        if (message == 'success') {
-           getUserProfileData().then( (userData) => {   //getUserDataFromRegisterProfile
-             const [userName, userPhoto] = userData
-              // this.$root.$emit('user-data', userName, userPhoto)   
-              console.log(userName, userPhoto  );
-           })
-          //  this.$router.push('/movies') //redirect to page
-        }else{
-            errorMessage.value = message
-            showErrorAlert.value = true;
-            setTimeout(() => (showErrorAlert.value = false), 3000)
+      singUser(email.value, pass.value).then((message) => {
+        if (message == "success") {
+          getUserProfileData().then((userData) => {
+            //getUserDataFromRegisterProfile
+            const [userName, userPhoto] = userData;
+            // this.$root.$emit('user-data', userName, userPhoto)
+            console.log(userName, userPhoto);
+          });
+           router.push('/events') //redirect to page
+        } else {
+          errorMessage.value = message;
+          showErrorAlert.value = true;
+          setTimeout(() => (showErrorAlert.value = false), 3000);
         }
-        
       });
-    }
+    };
 
-
- 
+    return { email, pass, showPass, showProgressCircular, showErrorAlert, errorMessage, emailRules, passRules, login, };
+  },
+};
 </script>
-
-
-<style scoped>
-.login {
-  background: url("");
-  background: linear-gradient(#c0d9ff, #ffffffc9);
-}
-</style>
