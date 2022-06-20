@@ -96,9 +96,14 @@ import getUserProfileData from "@/service/getUserProfileData";
 import singUser from "@/service/login";
 import { ref, computed } from "vue";
 import { useRouter, useRoute } from 'vue-router'
+import { useDataStore } from "@/stores/userData";
+
 
 export default {
   setup() {
+    const userData = useDataStore()
+    
+
     let errorMessage = ref("");
     let showErrorAlert = ref(false);
     let showProgressCircular = ref(false);
@@ -106,7 +111,6 @@ export default {
     let pass = ref("111111");
     let email = ref("koko@abv.bg");
     const router = useRouter()
-
 
     let emailRules = ref(
       computed(() => [
@@ -133,6 +137,9 @@ export default {
             const [userName, userPhoto] = userData;
             // this.$root.$emit('user-data', userName, userPhoto)
             console.log(userName, userPhoto);
+
+            userData.isAuth = true
+
           });
            router.push('/events') //redirect to page
         } else {
