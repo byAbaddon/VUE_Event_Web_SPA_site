@@ -102,7 +102,7 @@ import { useDataStore } from "@/stores/userData";
 export default {
   setup() {
     const userData = useDataStore()
-    
+    const storeLoginFnc =  userData.login
 
     let errorMessage = ref("");
     let showErrorAlert = ref(false);
@@ -138,7 +138,7 @@ export default {
             // this.$root.$emit('user-data', userName, userPhoto)
             console.log(userName, userPhoto);
 
-            userData.isAuth = true
+           storeLoginFnc()
 
           });
            router.push('/events') //redirect to page

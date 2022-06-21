@@ -1,27 +1,32 @@
 import { defineStore } from 'pinia'
-
-
+import { ref } from "vue";
 
 export const useDataStore = defineStore('userData', {
-
   state: () => ({
-    isAuth : false, //localStorage.getItem('auth') != null,    // login
-    counter: 0
+    isAuth: ref(localStorage.getItem('auth')),
+    data: ''
   }),
 
   getters: {
-    double: state => state.counter * 2,
-    checkIsAuth : state => state.isAuth
+    checkIsAuth: state =>  state.isAuth == null,   //user Not logIn
+    localData: state =>  state.data 
+          
   },
 
   actions: {
-    increment() {
-       this.counter++
+    login() {
+      this.isAuth = true
+      this.data = JSON.parse(localStorage.getItem('auth'))
     },
 
-    checkUserLogin(e) {
-      this.isAuth = e
-    }
+    logout() {
+      this.isAuth = false
+      // this.data = ''
+      localStorage.clear()
+    },
 
-  },
+  }
+  
 })
+
+

@@ -1,32 +1,20 @@
 <template>
   <div>
      <h1>This is Event page</h1>
-     <!-- <h2>1) {{isAuth }}</h2> -->
-     <h2>--  {{userData.counter }} --</h2>
-     <v-btn color=red @click="increment">Increment  {{userData.counter}} </v-btn>
-     <h2>--  {{userData.double}} --</h2>
-
-
-     <h2>------------------</h2>
-     <h2>--  {{check}} --</h2>
-     <h2>--  {{userData.checkIsAuth}} --</h2>
-    
-     
+     <div v-if="userData.isAuth"> {{userData.isAuth }}</div>
+     <div v-else> Not Login</div>
+     <h3>Computed store is user login =   {{userData.checkIsAuth}}</h3>
+     <v-btn  color="secondary" class="ml-3" v-model="userData.checkIsAuth"
+     @click="userData.isAuth = ! userData.isAuth"
+      >Button {{userData.checkIsAuth}}</v-btn>
   </div>
- 
-
 </template>
 
 <script setup>
 import { useDataStore } from "@/stores/userData";
-// import { ref } from "vue";
  const userData = useDataStore()
-let increment = userData.increment
- let check = userData.checkIsAuth
-   
+ 
 
 </script>
 
-<style>
-
-</style>
+ 

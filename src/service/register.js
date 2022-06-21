@@ -10,7 +10,7 @@ const registrationNewUser = async(email, password) => createUserWithEmailAndPass
       // console.log('You full data', getAuth().currentUser)
       console.log('You register was successful', uid, email)
 
-      localStorage.setItem('auth', JSON.stringify({ uid, email}))
+      localStorage.setItem('auth', JSON.stringify({ uid, email,}))
       return 'success'
     })
     .catch((error) => {
