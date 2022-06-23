@@ -3,8 +3,15 @@
     <v-icon color="green darken-2">mdi-eslint</v-icon> 
     <v-app-bar-title class="ml-6">Hello, {{userData.isAuth ? userData.data.displayName : 'Anonymous'}}</v-app-bar-title>
       <v-btn to="/" >Home</v-btn>
-      <v-spacer></v-spacer>
-      <v-btn to="/events">Event</v-btn>
+     
+      <div v-if="userData.isAuth" >
+         <v-spacer></v-spacer>
+          <v-btn  to="/events">Event</v-btn>
+          <v-btn  to="/about">About</v-btn>
+          
+      </div>
+     
+
       <v-spacer></v-spacer>
       <v-btn  v-if="!userData.isAuth" to="/login">Login</v-btn>
       <v-btn  v-else @click="userData.logout"  to="/">Logout</v-btn>

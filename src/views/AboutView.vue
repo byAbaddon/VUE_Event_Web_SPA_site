@@ -16,7 +16,7 @@
 
 <script setup>
   import { ref } from "vue";
-  import { useTestStore } from "@/stores/testStore";
+  import { useTestStore } from "@/stores/events";
 
   const store = useTestStore()
   const inputName = ref('')

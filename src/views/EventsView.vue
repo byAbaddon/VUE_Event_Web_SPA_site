@@ -1,20 +1,100 @@
 <template>
-  <div>
-     <h1>This is Event page</h1>
-     <div v-if="userData.isAuth"> {{userData.isAuth }}</div>
-     <div v-else> Not Login</div>
-     <h3>Computed store is user login =   {{userData.checkIsAuth}}</h3>
-     <v-btn  color="secondary" class="ml-3" v-model="userData.checkIsAuth"
-     @click="userData.isAuth = ! userData.isAuth"
-      >Button {{userData.checkIsAuth}}</v-btn>
+  <div v-if="!userData.isAuth">
+    <h1>This is Event page</h1>
+    <div>{{ userData.data }}</div>
+  </div>
+
+  <div v-else>
+    <v-row class="d-flex align-center">
+      <v-col v-for="(event, index) in events.allEvents" :key="index" >
+        <v-card class="mx-auto bg-grey-lighten-3 mt-12" max-width="344">
+          <v-card-title><span class="mx-auto">{{event.name}}</span></v-card-title>
+          <v-img
+            :src="event.image"
+            height="200px"
+            cover
+          ></v-img>
+
+          <v-card-subtitle> Explore 1,000 miles of wonder </v-card-subtitle>
+
+          <v-card-actions>
+            <p class="" >Click button to see more... </p>
+            <v-spacer></v-spacer>
+            <v-btn
+              width="100"
+              :class="`${ show ? 'bg-error' : 'bg-success'}`"
+              color="white"
+              :prepend-icon=" show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+              variant="outlined"
+              @click="showMoreDetails"
+            >
+             {{ `${show ? 'Less' :  'More'}`}} 
+            </v-btn>
+
+          </v-card-actions>
+
+          <v-expand-transition>
+            <div v-show="show">
+              <v-divider></v-divider>
+
+              <v-card-text>
+                <h3 class="text-center mb-1 text-decoration-underline">
+                  Description
+                </h3>
+                <p> {{event.description}}</p>
+                <h3 class="text-center mb-1 text-decoration-underline">
+                  Date: <span class="font-weight-light text-blue"> {{event.date}}</span>
+                </h3>
+                <h3 class="text-center mb-1 text-decoration-underline">
+                  People interested in:
+                  <span class="font-weight-light text-blue">{{event.people}}</span>
+                </h3>
+                <h3 class="text-center mb-1 text-decoration-underline">
+                  Organizer:
+                  <span class="font-weight-light text-blue"> {{event.organizer}}</span>
+                </h3>
+              </v-card-text>
+              <v-card-actions class="d-flex justify-space-around">
+                
+                <v-btn
+                v-show="eventOwnerUid != event.uid"
+                 class="bg-primary pa-2"
+                 rounded="4"
+                 append-icon="mdi-thumb-up"
+                 color=""
+                 variant="outlined"> Join the event </v-btn>
+
+                  <v-btn
+                 v-show="eventOwnerUid == event.uid"
+                 class="bg-warning pa-2"
+                 rounded="4"
+                 append-icon="mdi-square-edit-outline"
+                 color=""
+                 variant="outlined">Edit event </v-btn>
+              </v-card-actions>
+            </div>
+          </v-expand-transition>
+        </v-card>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useDataStore } from "@/stores/userData";
- const userData = useDataStore()
- 
+import { useEventStore } from "@/stores/events";
 
+const userData = useDataStore()
+const events = useEventStore()
+
+let show = ref(false)
+const eventOwnerUid = ref(JSON.parse(localStorage.getItem('auth')).uid)
+
+let showMoreDetails = () => show.value = !show.value
+
+
+console.log(events.allEvents);  
 </script>
 
  

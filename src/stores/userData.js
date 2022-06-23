@@ -9,8 +9,7 @@ export const useDataStore = defineStore('userData', {
 
   getters: {
     checkIsAuth: state =>  state.isAuth == null,   //user Not logIn
-    localData: state =>  state.data 
-          
+    localData: state =>  state.data = data          
   },
 
   actions: {
