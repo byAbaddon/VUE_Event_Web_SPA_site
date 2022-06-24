@@ -1,24 +1,305 @@
+ <template>
+  <v-row class="create">
+    <v-col cols="12" v-show="show">
+      <v-container class="d-flex justify-center">
+        <v-row class="my-auto">
+          <!--form  -->
+          <v-col cols="7" class="mx-auto">
+            <v-form ref="form" v-model="valid" lazy-validation>
+              <v-text-field
+                color="blue"
+                class="text-black"
+                v-model="title"
+                :rules="titleRules"
+                label="Title"
+                append-icon="mdi-alpha-t-circle-outline"
+                required
+                variant="outlined"
+              ></v-text-field>
 
-<template>
- <div>
-   <h1>About page</h1>
-   <h2>Name: {{store.data.name}}</h2>
-   <h2>Age: {{store.data.age}}</h2>
-   <h2>Computed: {{store.web}}</h2>
-   <v-btn color="primary"  class=" ma-3"  @click="store.increase"  >add_Age</v-btn>
-   <hr>
-   <input v-model="inputName"   type="text" placeholder=" Input new name:" class="ma-3 pa-2  bg-grey " />
-   <hr>
-   <v-btn color="secondary" class=" ma-3"  @click="store.changeName(inputName)"  >change_Name</v-btn>
- </div>
+              <v-text-field
+                color="blue"
+                v-model="imageURL"
+                :rules="imageRules"
+                label="URL-Image"
+                placeholder="https://"
+                append-icon="mdi-image"
+                required
+                variant="outlined"
+              ></v-text-field>
+
+              <v-text-field
+                color="blue"
+                v-model="organizer"
+                :rules="organizerRules"
+                label="Organizer"
+                append-icon="mdi-ninja"
+                required
+                variant="outlined"
+              ></v-text-field>
+
+              <v-text-field
+                color="blue"
+                v-model="date"
+                :rules="dateRules"
+                label="Date"
+                required
+                append-icon="mdi-calendar"
+                type="date"
+                min=""
+                variant="outlined"
+              ></v-text-field>
+
+              <v-textarea
+                color="blue"
+                no-resize
+                height="80"
+                outlined
+                required
+                append-icon="mdi-book-open-variant"
+                v-model="description"
+                :rules="descriptionRules"
+                :counter="4"
+                name="i"
+                label="Description"
+              
+                variant="outlined"
+              ></v-textarea>
+
+              <div class="text-caption">People who like event</div>
+              <v-slider
+                color="blue"
+                v-model="rating"
+                :rules="ratingRules"
+                label="№"
+                reverse-label
+                required
+                append-icon="mdi-medal"
+                step="1"
+                max="100"
+                thumb-label="№"
+                :value="rating"
+              >
+              </v-slider>
+
+              <v-btn
+                :disabled="
+                  !valid ||
+                  title.length < 2 ||
+                  organizer.length < 3 ||
+                  description.length < 4 ||
+                  date <= 0
+                "
+                color="success"
+                :elevation="12"
+                class="mr-4"
+                @click="validate"
+              >
+                Add
+              </v-btn>
+
+              <!-- <v-btn :elevation="12" color="error" class="mr-4" @click="reset"> Reset </v-btn> -->
+              <v-btn :elevation="12" color="error" class="mr-4" @click="exit">
+                Exit
+              </v-btn>
+            </v-form>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-col>
+
+    <v-col>
+      <!-- alert   -->
+      <div class="mx-auto">
+        <v-alert
+          class="mx-auto"
+          height="50"
+          width="47em"
+          type="error"
+          icon="mdi-alert"
+          v-show="showErrorAlert"
+        >
+          {{ errorMessage }}
+        </v-alert>
+      </div>
+    </v-col>
+
+    <!-- dialog success message-->
+    <v-dialog v-model="showMessageDialog" dark width="500" persistent>
+      <v-card>
+        <v-card-text>
+          <h4
+            class="
+              green--text
+              body-1
+              text-weight-bold text-center text-uppercase
+              pt-10
+            "
+          >
+            Success add event <span class="blue--text">{{ title }}</span> to
+            collection
+            <h5 class="yellow--text text-center body-2">
+              You will be redirect to events page
+            </h5>
+          </h4>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 
-<script setup>
-  import { ref } from "vue";
-  import { useTestStore } from "@/stores/events";
 
-  const store = useTestStore()
-  const inputName = ref('')
+<script>
+import { useRouter} from 'vue-router'
+import { ref } from "vue";
+export default {
+  setup() {
+    let router = useRouter()
+    let show = ref(true);
+    let valid = ref(true);
+    let showErrorAlert = ref(false);
+    let showMessageDialog = ref(false);
+    let errorMessage = ref("");
+
+    let title = ref("E.T.")
+    let titleRules = [
+      (v) => !!v || "Title is required",
+      (v) => (v && v.length >= 2) || "Title must be that more 1 characters",
+    ];
+
+    let imageURL = ref(
+      "https://discover.ticketmaster.co.uk/wp-content/uploads/2022/05/Anything-Goes-2022.-Anything-Goes.-Photo-by-Marc-Brenner-738x415.jpg.webp")
+    let imageRules = [
+      (v) => !!v || "Images is required",
+      (v) =>
+        (v && /https?:\/\//.test(v)) ||
+        "Images must be start with http:// ot https://",
+    ];
+    let organizer = ref("Organizer")
+    let organizerRules = [
+      (v) => !!v || "Organizer is required",
+      (v) => (v && v.length >= 2) || "Organizer must be that more 1 characters",
+    ];
+
+    let description = ref("The third installment of  which follows the continuing adventures of Newt Scamander.")
+
+    let descriptionRules = [
+      (v) => !!v || "Description is required",
+      (v) =>(v && v.length > 3) || "Description must be more than 4 characters",
+        
+    ];
+
+    let date = ref(1)
+    let dateRules = [
+      (v) => !!v || "Date is required",
+      (v) => (v && v.length >= 3) || "Date count must be number bigger than -1",
+    ];
+    let rating = ref("1")
+    let ratingRules = [
+      (v) => !!v || "People description is required",
+      (v) => (v && v > 0) || "People is required",
+    ];
+
+    let validate = () => {
+      if ($refs.form.validate()) {
+        //fix input fields result
+        title = title.charAt(0).toUpperCase() + title.slice(1); //capitalize first letter
+        organizer = organizer.charAt(0).toUpperCase() + organizer.slice(1); //capitalize first letter
+
+        try {
+          tickets = date.replace(/^0+/, "");
+        } catch (e) {
+          ("");
+        } //remove leading zero
+
+        const uid = JSON.parse(localStorage.getItem("auth")).uid;
+        const newEventObj = {
+          uid,
+          title,
+          image: imageURL,
+          organizer,
+          description,
+          date,
+          rating,
+        };
+
+        //check is movie in collection
+        const checkIsEventExist = movies.some(
+          (x) => x.title == title && x.imageUrl == imageURL
+        );
+        console.log(checkIsEventExist);
+
+        addData(newEventObj)
+          .then((e) => {
+            console.log("Success add new event to collection", e);
+            showMessageDialog = true;
+            setTimeout(() => {
+              showMessageDialog = false;
+              $router.push("events"); //redirect ot movies Page   TODO
+            }, 3500);
+          })
+          .catch((e) => {
+            errorMessage = e;
+            showErrorAlert = true;
+            setTimeout(() => (showErrorAlert = false), 3000);
+          });
+
+        resetValidation = () => {
+          $refs.form.resetValidation();
+        };
+      }
+    };
+
+   const reset = () => {
+      try {
+        $refs.form.reset();
+      } catch (error) {
+        ("");
+      }
+    };
+
+   const  exit = () => {
+      show = false;
+      // $router.push("home");
+      setTimeout(() => {
+        router.push("events");
+      }, 100);
+    };
+    return {
+      show,
+      valid,
+      showErrorAlert,
+      showMessageDialog,
+      errorMessage,
+      title,
+      titleRules,
+      imageURL,
+      imageRules,
+      organizer,
+      organizerRules,
+      description,
+      descriptionRules,
+      date,
+      dateRules,
+      rating,
+      ratingRules,
+      validate,
+      reset,
+      exit,
+    };
+  },
+};
 </script>
 
+
+
+<style scoped >
+.create {
+  margin: 0em;
+  height: 100%;
+  background: url("") no-repeat, linear-gradient(#ffffff, #ffffff);
+
+  /* background: white; */
+}
+</style>

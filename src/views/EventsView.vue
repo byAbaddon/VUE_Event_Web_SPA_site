@@ -91,7 +91,11 @@ const events = useEventStore()
 let show = ref(false)
 const eventOwnerUid = ref(JSON.parse(localStorage.getItem('auth')).uid)
 
-let showMoreDetails = () => show.value = !show.value
+let showMoreDetails = (e) => {
+  // const element = e.target.parentNode.parentNode.parentNode.lastElementChild
+  show.value = !show.value
+
+}
 
 
 console.log(events.allEvents);  

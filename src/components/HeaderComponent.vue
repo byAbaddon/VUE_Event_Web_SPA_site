@@ -6,7 +6,7 @@
      
       <div v-if="userData.isAuth" >
          <v-spacer></v-spacer>
-          <v-btn  to="/events">Event</v-btn>
+          <v-btn  to="/events">Events</v-btn>
           <v-btn  to="/about">About</v-btn>
           
       </div>
