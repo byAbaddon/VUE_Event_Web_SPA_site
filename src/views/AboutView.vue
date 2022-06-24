@@ -3,9 +3,13 @@
     <v-col cols="12" v-show="show">
       <v-container class="d-flex justify-center">
         <v-row class="my-auto">
+          <!-- Title--->
+           <v-col cols="12" class="text-blue text-center text-decoration-underline">
+            <h1>ORGANIZE EVENT</h1> 
+           </v-col>
           <!--form  -->
           <v-col cols="7" class="mx-auto">
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form ref="form" v-model="valid" lazy-validation height="111">
               <v-text-field
                 color="blue"
                 class="text-black"
@@ -36,6 +40,8 @@
                 append-icon="mdi-ninja"
                 required
                 variant="outlined"
+                disabled
+               
               ></v-text-field>
 
               <v-text-field
@@ -84,11 +90,10 @@
 
               <v-btn
                 :disabled="
-                  !valid ||
+               
                   title.length < 2 ||
                   organizer.length < 3 ||
-                  description.length < 4 ||
-                  date <= 0
+                  description.length < 4
                 "
                 color="success"
                 :elevation="12"
@@ -151,10 +156,13 @@
 
 
 <script>
-import { useRouter} from 'vue-router'
+import { addData as addNewEvent} from "@/service/addData";
+import { useRouter } from 'vue-router'
+import { useDataStore } from "@/stores/userData";
 import { ref } from "vue";
 export default {
   setup() {
+    let dataStore = useDataStore()
     let router = useRouter()
     let show = ref(true);
     let valid = ref(true);
@@ -163,43 +171,43 @@ export default {
     let errorMessage = ref("");
 
     let title = ref("E.T.")
-    let titleRules = [
+    let titleRules =ref( [
       (v) => !!v || "Title is required",
       (v) => (v && v.length >= 2) || "Title must be that more 1 characters",
-    ];
+    ])
 
     let imageURL = ref(
       "https://discover.ticketmaster.co.uk/wp-content/uploads/2022/05/Anything-Goes-2022.-Anything-Goes.-Photo-by-Marc-Brenner-738x415.jpg.webp")
-    let imageRules = [
+    let imageRules = ref([
       (v) => !!v || "Images is required",
       (v) =>
         (v && /https?:\/\//.test(v)) ||
         "Images must be start with http:// ot https://",
-    ];
-    let organizer = ref("Organizer")
-    let organizerRules = [
+    ])
+    let organizer = ref(dataStore.data.uid)
+    let organizerRules = ref([
       (v) => !!v || "Organizer is required",
       (v) => (v && v.length >= 2) || "Organizer must be that more 1 characters",
-    ];
+    ])
 
     let description = ref("The third installment of  which follows the continuing adventures of Newt Scamander.")
 
-    let descriptionRules = [
+    let descriptionRules =ref( [
       (v) => !!v || "Description is required",
       (v) =>(v && v.length > 3) || "Description must be more than 4 characters",
         
-    ];
+    ])
 
     let date = ref(1)
-    let dateRules = [
+    let dateRules = ref([
       (v) => !!v || "Date is required",
       (v) => (v && v.length >= 3) || "Date count must be number bigger than -1",
-    ];
+    ])
     let rating = ref("1")
-    let ratingRules = [
+    let ratingRules = ref([
       (v) => !!v || "People description is required",
       (v) => (v && v > 0) || "People is required",
-    ];
+    ])
 
     let validate = () => {
       if ($refs.form.validate()) {

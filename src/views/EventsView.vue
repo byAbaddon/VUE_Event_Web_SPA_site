@@ -1,10 +1,35 @@
 <template>
-  <div v-if="!userData.isAuth">
-    <h1>This is Event page</h1>
-    <div>{{ userData.data }}</div>
+<div>
+  <div v-if="!userData.isAuth" >
+     <h3 class="text-center mt-2" >Cannot find any event...
+      <span>
+        <v-btn
+        class=""  
+        color="green"
+        variant="outlined"
+        size="small"
+        to="/about"
+        >Create first one</v-btn>
+      </span>
+     </h3>
   </div>
 
-  <div v-else>
+  <div v-else >
+     <h3 class="text-center mt-2" >Organize New Event
+      <span>
+        <v-btn
+        class=""  
+        color="green"
+        variant="outlined"
+        size="small"
+        to="/about"
+        >Create</v-btn>
+      </span>
+     </h3>
+  </div>
+
+  <!-- list of events -->
+  <div>
     <v-row class="d-flex align-center">
       <v-col v-for="(event, index) in events.allEvents" :key="index" >
         <v-card class="mx-auto bg-grey-lighten-3 mt-12" max-width="344">
@@ -78,6 +103,7 @@
       </v-col>
     </v-row>
   </div>
+ </div>
 </template>
 
 <script setup>

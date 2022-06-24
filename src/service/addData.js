@@ -1,11 +1,11 @@
 import { db } from '@/service/sdk'
 import { collection, addDoc } from "firebase/firestore"; 
 
-const addData = async (newMovieObj) => {
+const addData = async (newEventObj) => {
 
   try {
-    const docRef = await addDoc(collection(db, "movies"), {
-      ...newMovieObj
+    const docRef = await addDoc(collection(db, "events"), {
+      ...newEventObj
     })
     console.log("Document written with ID: ", docRef.id)
     return docRef.id
@@ -17,4 +17,4 @@ const addData = async (newMovieObj) => {
 }
 
 
-export default addData
+export { addData }
