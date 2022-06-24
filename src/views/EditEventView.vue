@@ -5,7 +5,7 @@
         <v-row class="my-auto">
           <!-- Title--->
            <v-col cols="12" class="text-blue text-center text-decoration-underline">
-            <h1>ORGANIZE EVENT</h1> 
+            <h1>EDIT EVENT</h1> 
            </v-col>
           <!--form  -->
           <v-col cols="7" class="mx-auto">
@@ -85,15 +85,12 @@
                 max="100"
                 thumb-label="№"
                 :value="rating"
-                disabled
               >
               </v-slider>
            </div>
               <v-btn
-                :disabled="
-               
+                :disabled=" 
                   title.length < 2 ||
-                  organizer.length < 3 ||
                   description.length < 4
                 "
                 color="success"

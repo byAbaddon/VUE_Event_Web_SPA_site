@@ -8,8 +8,8 @@
             <h1>ORGANIZE EVENT</h1> 
            </v-col>
           <!--form  -->
-          <v-col cols="7" class="mx-auto">
-            <v-form ref="form" v-model="valid" lazy-validation height="111">
+          <v-col cols="6" class="mx-auto">
+            <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
                 color="blue"
                 class="text-black"
@@ -23,7 +23,7 @@
 
               <v-text-field
                 color="blue"
-                v-model="imageURL"
+                v-model="image"
                 :rules="imageRules"
                 label="URL-Image"
                 placeholder="https://"
@@ -35,13 +35,12 @@
               <v-text-field
                 color="blue"
                 v-model="organizer"
-                :rules="organizerRules"
                 label="Organizer"
                 append-icon="mdi-ninja"
                 required
                 variant="outlined"
                 disabled
-               
+               suffix="This was added automatic!"
               ></v-text-field>
 
               <v-text-field
@@ -72,30 +71,24 @@
                 variant="outlined"
               ></v-textarea>
           <div>
-              <div class="text-caption">People who like event</div>
+              <div class="text-caption">People who like event/default zero</div>
               <v-slider
                 color="blue"
-                v-model="rating"
-                :rules="ratingRules"
+                v-model="people"
+                :rules="peopleRules"
                 label="№"
                 reverse-label
                 required
                 append-icon="mdi-medal"
                 step="1"
                 max="100"
-                thumb-label="№"
-                :value="rating"
+                :value="people"
                 disabled
               >
               </v-slider>
            </div>
               <v-btn
-                :disabled="
-               
-                  title.length < 2 ||
-                  organizer.length < 3 ||
-                  description.length < 4
-                "
+                :disabled=" title.length < 2 || description.length < 4"
                 color="success"
                 :elevation="12"
                 class="mr-4"
@@ -157,13 +150,17 @@
 
 
 <script>
-import { addData as addNewEvent} from "@/service/addData";
+import { addData} from "@/service/addData";
 import { useRouter } from 'vue-router'
 import { useDataStore } from "@/stores/userData";
+import { useEventStore } from "@/stores/events";
 import { ref } from "vue";
+import { isKnownSvgAttr } from "@vue/shared"
+
 export default {
   setup() {
     let dataStore = useDataStore()
+    let eventStore = useEventStore()
     let router = useRouter()
     let show = ref(true);
     let valid = ref(true);
@@ -177,19 +174,16 @@ export default {
       (v) => (v && v.length >= 2) || "Title must be that more 1 characters",
     ])
 
-    let imageURL = ref(
-      "https://discover.ticketmaster.co.uk/wp-content/uploads/2022/05/Anything-Goes-2022.-Anything-Goes.-Photo-by-Marc-Brenner-738x415.jpg.webp")
+    let image = ref(
+      "https://discover.ticketmaster.co.uk/wp-content/uploads/2022/05/Anything-Goes-2022.-Anything-Goes.-Photo-by-Marc-Brenner-738x415.jpg")
     let imageRules = ref([
       (v) => !!v || "Images is required",
       (v) =>
         (v && /https?:\/\//.test(v)) ||
         "Images must be start with http:// ot https://",
     ])
-    let organizer = ref(dataStore.data.uid)
-    let organizerRules = ref([
-      (v) => !!v || "Organizer is required",
-      (v) => (v && v.length >= 2) || "Organizer must be that more 1 characters",
-    ])
+    let organizer = ref(dataStore.localData.uid)
+   
 
     let description = ref("The third installment of  which follows the continuing adventures of Newt Scamander.")
 
@@ -204,75 +198,49 @@ export default {
       (v) => !!v || "Date is required",
       (v) => (v && v.length >= 3) || "Date count must be number bigger than -1",
     ])
-    let rating = ref("0")
-    let ratingRules = ref([
+    let people = ref("0")
+    let peopleRules = ref([
       (v) => !!v || "People description is required",
       (v) => (v && v >= 0) || "People is required",
     ])
 
-    let validate = () => {
-      if ($refs.form.validate()) {
-        //fix input fields result
-        title = title.charAt(0).toUpperCase() + title.slice(1); //capitalize first letter
-        
-
-        try {
-          tickets = date.replace(/^0+/, "");
-        } catch (e) {
-          ("");
-        } //remove leading zero
-
-        const uid = JSON.parse(localStorage.getItem("auth")).uid;
-        const newEventObj = {
-          uid,
-          title,
-          image: imageURL,
-          organizer,
-          description,
-          date,
-          rating,
-        };
-
+    let validate = () => {       
+      const newEventObj = {
+        title: title.value, image: image.value, organizer: organizer.value,
+        date: date.value, description: description.value, people: people.value,
+      };
+            
         //check is movie in collection
-        const checkIsEventExist = movies.some(
-          (x) => x.title == title && x.imageUrl == imageURL
-        );
+        const checkIsEventExist = eventStore.allEvents.some(x => x.title == title.value && x.image == image.value);
         console.log(checkIsEventExist);
-
-        addData(newEventObj)
-          .then((e) => {
-            console.log("Success add new event to collection", e);
-            showMessageDialog = true;
-            setTimeout(() => {
-              showMessageDialog = false;
-              $router.push("events"); //redirect ot movies Page   TODO
-            }, 3500);
-          })
-          .catch((e) => {
-            errorMessage = e;
-            showErrorAlert = true;
-            setTimeout(() => (showErrorAlert = false), 3000);
+    
+       if (!checkIsEventExist) {
+            addData(newEventObj)
+              .then((e) => {
+              console.log("Success add new event to collection", e);
+              showMessageDialog = true;
+              setTimeout(() => {
+                showMessageDialog = false;
+                router.push("/events"); //redirect ot movies Page   TODO
+              }, 3500);
+            })
+            .catch((e) => {
+              errorMessage = e;
+              showErrorAlert = true;
+              setTimeout(() => (showErrorAlert = false), 3000);
           });
 
-        resetValidation = () => {
-          $refs.form.resetValidation();
-        };
+       } else {
+          showErrorAlert.value = true
+          errorMessage.value = "This event, already exist!"
+        }   
       }
-    };
-
-   const reset = () => {
-      try {
-        $refs.form.reset();
-      } catch (error) {
-        ("");
-      }
-    };
+    
 
    const  exit = () => {
       show = false;
-      // $router.push("home");
       setTimeout(() => {
-        router.push("events");
+        router.push("/events");
       }, 100);
     };
     return {
@@ -283,18 +251,16 @@ export default {
       errorMessage,
       title,
       titleRules,
-      imageURL,
+      image,
       imageRules,
       organizer,
-      organizerRules,
       description,
       descriptionRules,
       date,
       dateRules,
-      rating,
-      ratingRules,
+      people,
+      peopleRules,
       validate,
-      reset,
       exit,
     };
   },

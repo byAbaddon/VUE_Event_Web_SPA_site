@@ -4,12 +4,12 @@ import { ref } from "vue";
 export const useDataStore = defineStore('userData', {
   state: () => ({
     isAuth: ref(localStorage.getItem('auth')),
-    data: ''
+    data: ref('')
   }),
 
   getters: {
     checkIsAuth: state =>  state.isAuth == null,   //user Not logIn
-    localData: state =>  state.data = data          
+    localData: state =>  state.data = JSON.parse(localStorage.getItem('auth'))        
   },
 
   actions: {

@@ -22,7 +22,7 @@
         color="green"
         variant="outlined"
         size="small"
-        to="/about"
+        to="/events/add"
         >Create</v-btn>
       </span>
      </h3>
@@ -33,7 +33,7 @@
     <v-row class="d-flex align-center">
       <v-col v-for="(event, index) in events.allEvents" :key="index" >
         <v-card class="mx-auto bg-grey-lighten-3 mt-12" max-width="344">
-          <v-card-title><span class="mx-auto">{{event.name}}</span></v-card-title>
+          <v-card-title><span class="mx-auto">{{event.title}}</span></v-card-title>
           <v-img
             :src="event.image"
             height="200px"
@@ -95,7 +95,9 @@
                  rounded="4"
                  append-icon="mdi-square-edit-outline"
                  color=""
-                 variant="outlined">Edit event </v-btn>
+                 variant="outlined"
+                   to="/events/edit"
+                 >Edit event </v-btn>
               </v-card-actions>
             </div>
           </v-expand-transition>
@@ -115,7 +117,7 @@ const userData = useDataStore()
 const events = useEventStore()
 
 let show = ref(false)
-const eventOwnerUid = ref(JSON.parse(localStorage.getItem('auth')).uid)
+const eventOwnerUid = ref(JSON.parse(localStorage.getItem('auth')).organizer)
 
 let showMoreDetails = (e) => {
   // const element = e.target.parentNode.parentNode.parentNode.lastElementChild

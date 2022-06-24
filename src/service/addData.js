@@ -7,11 +7,11 @@ const addData = async (newEventObj) => {
     const docRef = await addDoc(collection(db, "events"), {
       ...newEventObj
     })
-    console.log("Document written with ID: ", docRef.id)
+    console.log("Document written with Success by ID: ", docRef.id)
     return docRef.id
   } catch (e) {
-    console.error("Error adding document: ", e)
-    return e
+    console.error("Error adding document: ", e.error)
+    return e.error
   }
 
 }

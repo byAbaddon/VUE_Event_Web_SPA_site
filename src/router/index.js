@@ -20,9 +20,22 @@ const routes = [
   {
     path: '/events',
     name: 'events',
-    component: () => import('../views/EventsView.vue')
+    component: () => import('../views/EventsView.vue'),
+
   },
 
+  {
+    path: '/events/add',
+    name: 'add',
+    component: () => import('../views/AddNewEventView.vue'),
+    
+  },
+  {
+    path: '/events/edit',
+    name: 'edit',
+    component: () => import('../views/EditEventView.vue'),
+    
+  },
   {
     path: '/about',
     name: 'about',
