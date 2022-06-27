@@ -17,9 +17,9 @@
 
   <!-- list of events -->
   <div>
-    <v-row class="d-flex align-center">
+    <v-row class="d-flex align-center   ma-4 mt-0">
       <v-col v-for="(event, index) in events.allEvents" :key="index" >
-        <v-card class="mx-auto bg-grey-lighten-3 mt-12" min-width="300" max-width="300">
+        <v-card  class="mx-auto bg-grey-lighten-3 mt-12" min-width="300" max-width="300">
           <v-card-title><span class="mx-auto">{{event.title}}</span></v-card-title>
           <v-img
             :src="event.image"
@@ -33,6 +33,7 @@
             <p class="" >Click button to see more... </p>
             <v-spacer></v-spacer>
             <v-btn
+            :id="index"
               width="100"
               :class="`${ show ? 'bg-error' : 'bg-success'}`"
               color="white"
@@ -46,7 +47,7 @@
           </v-card-actions>
 
           <v-expand-transition>
-            <div v-show="show">
+            <div v-show="show"    >  //TODO:
               <v-divider></v-divider>
 
               <v-card-text>
@@ -107,7 +108,9 @@ let show = ref(false)
 const eventOwnerUid = ref(JSON.parse(localStorage.getItem('auth')).uid)
 
 let showMoreDetails = (e) => {
+   console.log(e.currentTarget.id);
   // const element = e.target.parentNode.parentNode.parentNode.lastElementChild
+  // console.log(element);
   show.value = !show.value
 
 }
@@ -127,7 +130,7 @@ let showMoreDetails = (e) => {
 
  
  @keyframes changeColorTitle {
-  from {border-color: red;}
-  to {border-color: blue;}
+  from {border-color: red; }
+  to {border-color: rgb(0, 110, 255);}
 }
  </style>

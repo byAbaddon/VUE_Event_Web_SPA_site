@@ -224,12 +224,9 @@ export default {
       }
     
 
-   const  exit = () => {
-      show = false;
-      setTimeout(() => {
-        router.push("/events");
-      }, 100);
-    };
+   const  exit = () => router.push("/events");  
+     
+   
     return {
       valid,
       showAlert,

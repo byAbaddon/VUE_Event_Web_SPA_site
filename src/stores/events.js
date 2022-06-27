@@ -9,9 +9,11 @@ export const useEventStore = defineStore('events', () => {
 
   onMounted(() =>
     onSnapshot(collection(db, "events"), (doc) => doc.docs.forEach(x => {
-      let checkIsExist = allEvents.value.find(event => event.title == x.data().title)
-      if (!checkIsExist) 
-         allEvents.value.push(x.data()) 
+      let checkIsExist = allEvents.value.find(event => event.id == x.id)
+      if (!checkIsExist) {
+        const event = Object.assign({ id: x.id }, x.data())
+        allEvents.value.push(event) 
+      }
     }))
   )
 
