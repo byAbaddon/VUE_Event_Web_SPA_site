@@ -1,29 +1,16 @@
 <template>
 <div>
-  <div v-if="!userData.isAuth" >
-     <h3 class="text-center mt-2" >Cannot find any event...
-      <span>
-        <v-btn
-        class=""  
-        color="green"
-        variant="outlined"
-        size="small"
-        to="/about"
-        >Create first one</v-btn>
-      </span>
-     </h3>
-  </div>
 
-  <div v-else >
-     <h3 class="text-center mt-2" >Organize New Event
+  <div class="mt-4 d-flex justify-space-around" >
+     <h3 class="title mt-2 pa-2 text-center text-blue" > {{`${!userData.isAuth ? 'Cannot find any event...' : 'Organize New Event'}`}}
       <span>
         <v-btn
         class=""  
-        color="green"
+        color="red"
         variant="outlined"
         size="small"
         to="/events/add"
-        >Create</v-btn>
+        > {{`${!userData.isAuth ? 'Create first' :'Create'}` }}</v-btn>
       </span>
      </h3>
   </div>
@@ -32,7 +19,7 @@
   <div>
     <v-row class="d-flex align-center">
       <v-col v-for="(event, index) in events.allEvents" :key="index" >
-        <v-card class="mx-auto bg-grey-lighten-3 mt-12" max-width="344">
+        <v-card class="mx-auto bg-grey-lighten-3 mt-12" min-width="300" max-width="300">
           <v-card-title><span class="mx-auto">{{event.title}}</span></v-card-title>
           <v-img
             :src="event.image"
@@ -126,7 +113,21 @@ let showMoreDetails = (e) => {
 }
 
 
-console.log(events.allEvents);  
+// console.log(events.allEvents);  
 </script>
 
+ <style scoped>
+ .title{
+  border:3px dotted blue; inline-size: 20em;
+  border-radius: 6px;
+  animation-name: changeColorTitle;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+ }
+
  
+ @keyframes changeColorTitle {
+  from {border-color: red;}
+  to {border-color: blue;}
+}
+ </style>
