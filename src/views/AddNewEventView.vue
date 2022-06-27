@@ -1,10 +1,10 @@
  <template>
   <v-row class="create">
-    <v-col cols="12" v-show="show">
+    <v-col cols="12">
       <v-container class="d-flex justify-center">
         <v-row class="my-auto">
           <!-- Title--->
-           <v-col cols="12" class="text-blue text-center text-decoration-underline">
+           <v-col cols="12" class="mt-n6 text-blue text-center text-decoration-underline">
             <h1>ORGANIZE EVENT</h1> 
            </v-col>
           <!--form  -->
@@ -58,7 +58,8 @@
               <v-textarea
                 color="blue"
                 no-resize
-                height="80"
+                rows="3"
+                 row-height="15"
                 outlined
                 required
                 append-icon="mdi-book-open-variant"
@@ -111,39 +112,16 @@
       <!-- alert   -->
       <div class="mx-auto">
         <v-alert
+          v-show="showAlert"
           class="mx-auto"
           height="50"
           width="47em"
-          type="error"
-          icon="mdi-alert"
-          v-show="showErrorAlert"
+          :type="alertType == 'success'? 'success' : 'error'"
         >
-          {{ errorMessage }}
+          {{ message }}
         </v-alert>
       </div>
     </v-col>
-
-    <!-- dialog success message-->
-    <v-dialog v-model="showMessageDialog" dark width="500" persistent>
-      <v-card>
-        <v-card-text>
-          <h4
-            class="
-              green--text
-              body-1
-              text-weight-bold text-center text-uppercase
-              pt-10
-            "
-          >
-            Success add event <span class="blue--text">{{ title }}</span> to
-            collection
-            <h5 class="yellow--text text-center body-2">
-              You will be redirect to events page
-            </h5>
-          </h4>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
   </v-row>
 </template>
 
@@ -155,19 +133,17 @@ import { useRouter } from 'vue-router'
 import { useDataStore } from "@/stores/userData";
 import { useEventStore } from "@/stores/events";
 import { ref } from "vue";
-import { isKnownSvgAttr } from "@vue/shared"
+
 
 export default {
   setup() {
     let dataStore = useDataStore()
     let eventStore = useEventStore()
     let router = useRouter()
-    let show = ref(true);
     let valid = ref(true);
-    let showErrorAlert = ref(false);
-    let showMessageDialog = ref(false);
-    let errorMessage = ref("");
-
+    let showAlert = ref(false);
+    let message = ref("");
+    let alertType = ref('error')
     let title = ref("E.T.")
     let titleRules =ref( [
       (v) => !!v || "Title is required",
@@ -204,7 +180,10 @@ export default {
       (v) => (v && v >= 0) || "People is required",
     ])
 
-    let validate = () => {       
+    let validate = () => {     
+      //scroll automatic to bottom page to show result message
+       scroll(0, 9999)
+      
       const newEventObj = {
         title: title.value, image: image.value, organizer: organizer.value,
         date: date.value, description: description.value, people: people.value,
@@ -213,30 +192,38 @@ export default {
         //check is movie in collection
         const checkIsEventExist = eventStore.allEvents.some(x => x.title == title.value && x.image == image.value);
         console.log(checkIsEventExist);
-    
-       if (!checkIsEventExist) {
+
+       //show message alert
+       
+      
+      if (!checkIsEventExist) {
             addData(newEventObj)
               .then((e) => {
-              console.log("Success add new event to collection", e);
-              showMessageDialog = true;
+                console.log("Success add new event to collection", e)
+                 showAlert.value = true;
+                alertType.value = 'success'
+                message.value = 'Success add new event to collection'
+                setTimeout(() => {
+                  message.value = 'You will be redirect to event page...'
+                }, 1500);
               setTimeout(() => {
-                showMessageDialog = false;
                 router.push("/events"); //redirect ot movies Page   TODO
               }, 3500);
             })
             .catch((e) => {
-              errorMessage = e;
-              showErrorAlert = true;
-              setTimeout(() => (showErrorAlert = false), 3000);
+              message.value = e
+              showAlert.value = true;
           });
 
-       } else {
-          showErrorAlert.value = true
-          errorMessage.value = "This event, already exist!"
-        }   
+      } else {
+         showAlert.value = true;
+          message.value = "This event, already exist!"
+        
+      }   
+          setTimeout(() => (message.value = showAlert.value = ''), 3000);
       }
     
-//TODO:
+
    const  exit = () => {
       show = false;
       setTimeout(() => {
@@ -244,11 +231,10 @@ export default {
       }, 100);
     };
     return {
-      show,
       valid,
-      showErrorAlert,
-      showMessageDialog,
-      errorMessage,
+      showAlert,
+      alertType,
+      message,
       title,
       titleRules,
       image,

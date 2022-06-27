@@ -82,7 +82,7 @@
               <v-card-actions class="d-flex justify-space-around">
                 
                 <v-btn
-                v-show="eventOwnerUid != event.uid"
+                v-show="eventOwnerUid != event.organizer"
                  class="bg-primary pa-2"
                  rounded="4"
                  append-icon="mdi-thumb-up"
@@ -90,7 +90,7 @@
                  variant="outlined"> Join the event </v-btn>
 
                   <v-btn
-                 v-show="eventOwnerUid == event.uid"
+                 v-show="eventOwnerUid == event.organizer"
                  class="bg-warning pa-2"
                  rounded="4"
                  append-icon="mdi-square-edit-outline"
@@ -117,7 +117,7 @@ const userData = useDataStore()
 const events = useEventStore()
 
 let show = ref(false)
-const eventOwnerUid = ref(JSON.parse(localStorage.getItem('auth')).organizer)
+const eventOwnerUid = ref(JSON.parse(localStorage.getItem('auth')).uid)
 
 let showMoreDetails = (e) => {
   // const element = e.target.parentNode.parentNode.parentNode.lastElementChild

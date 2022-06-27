@@ -59,7 +59,8 @@
               <v-textarea
                 color="blue"
                 no-resize
-                height="80"
+                rows="1"
+                 row-height="15"
                 outlined
                 required
                 append-icon="mdi-book-open-variant"
@@ -131,20 +132,20 @@
     </v-col>
 
     <!-- dialog success message-->
-    <v-dialog v-model="showMessageDialog" dark width="500" persistent>
+    <v-dialog v-model="showMessageDialog" color="dark" width="500" persistent>
       <v-card>
         <v-card-text>
           <h4
             class="
-              green--text
+              green-text
               body-1
               text-weight-bold text-center text-uppercase
               pt-10
             "
           >
-            Success add event <span class="blue--text">{{ title }}</span> to
+            Success add event <span class="blue-text">{{ title }}</span> to
             collection
-            <h5 class="yellow--text text-center body-2">
+            <h5 class="yellow-text text-center body-2">
               You will be redirect to events page
             </h5>
           </h4>

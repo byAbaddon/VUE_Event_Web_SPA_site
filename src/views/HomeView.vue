@@ -124,9 +124,9 @@
 </template>
 
 
-
-// <script setup >
-//  import { defineComponent } from 'vue';
+ <script setup >
+  //scroll automatic to Top page
+  scroll(0, 0)
 </script>
 
 
