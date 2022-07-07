@@ -1,5 +1,11 @@
 <script  setup>
-const icons = ["mdi-home", "mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"];
+const icons = ["mdi-arrow-up-thick", "mdi-home", "mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"];
+
+const onIconBtn = (e) => {
+  const iconName = e.target.attributes.class.textContent.split(' ')[0]
+  iconName == 'mdi-arrow-up-thick' ? scroll(0,0) : ''
+}
+
 </script>
 
 
@@ -15,6 +21,7 @@ const icons = ["mdi-home", "mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-i
         class="mx-4 text-white"
         :icon="icon"
         variant="text"
+        @click="onIconBtn"
       ></v-btn>
     </div>
 
