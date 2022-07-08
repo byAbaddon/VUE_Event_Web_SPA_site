@@ -10,8 +10,8 @@ const addData = async (newEventObj) => {
     console.log("Document written with Success by ID: ", docRef.id)
     return docRef.id
   } catch (e) {
-    console.error("Error adding document: ", e.error)
-    return e.error
+    console.error("Error adding document: ", e.message)
+    return e.message
   }
 
 }

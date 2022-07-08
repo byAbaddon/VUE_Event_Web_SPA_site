@@ -89,7 +89,7 @@
               </v-slider>
            </div>
               <v-btn
-                :disabled=" title.length < 2 || description.length < 4"
+                :disabled=" title.length < 2 || description.length < 4 || !date.length || !/https?:\/\//.test(image) || showAlert"
                 color="success"
                 :elevation="12"
                 class="mr-4"
@@ -144,6 +144,8 @@ export default {
     let showAlert = ref(false);
     let message = ref("");
     let alertType = ref('error')
+
+
     let title = ref("E.T.")
     let titleRules =ref( [
       (v) => !!v || "Title is required",
@@ -191,10 +193,8 @@ export default {
             
         //check is movie in collection
         const checkIsEventExist = eventStore.allEvents.some(x => x.title == title.value && x.image == image.value);
-        console.log(checkIsEventExist);
-
-       //show message alert
-       
+    
+       //show message alert 
       
       if (!checkIsEventExist) {
             addData(newEventObj)
