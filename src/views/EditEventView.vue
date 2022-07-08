@@ -82,14 +82,13 @@
                 required
                 append-icon="mdi-medal"
                 step="1"
-                max="100"
+                max="1000"
                 :value="people"
-                disabled
               >
               </v-slider>
            </div>
               <v-btn
-                :disabled=" title.length < 2 || description.length < 4"
+                :disabled=" title.length < 2 || description.length < 4 || !date.length || !/https?:\/\//.test(image)"
                 color="success"
                 :elevation="12"
                 class="mr-4"
@@ -128,40 +127,50 @@
 
 
 <script>
-import { addData} from "@/service/addData";
-import { useRouter } from 'vue-router'
-import { useDataStore } from "@/stores/userData";
+import { editData} from "@/service/editData";
+import { useRouter, useRoute } from 'vue-router'
 import { useEventStore } from "@/stores/events";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 
 export default {
   setup() {
-    let dataStore = useDataStore()
     let eventStore = useEventStore()
     let router = useRouter()
+    let route = useRoute()
     let valid = ref(true);
     let showAlert = ref(false);
     let message = ref("");
     let alertType = ref('error')
-    let title = ref("E.T.")
+    let currentEventData = ref('')
+
+    onMounted(() => {
+      currentEventData.value = eventStore.allEvents.find(x => x.id == route.params.id)
+      title.value =  currentEventData.value.title
+      image.value =  currentEventData.value.image
+      organizer.value =  currentEventData.value.organizer
+      description.value =  currentEventData.value.description
+      people.value =  currentEventData.value.people
+      date.value = currentEventData.value.date  
+    })
+    
+    let title = ref('')
     let titleRules =ref( [
       (v) => !!v || "Title is required",
       (v) => (v && v.length >= 2) || "Title must be that more 1 characters",
     ])
 
-    let image = ref(
-      "https://discover.ticketmaster.co.uk/wp-content/uploads/2022/05/Anything-Goes-2022.-Anything-Goes.-Photo-by-Marc-Brenner-738x415.jpg")
+    let image = ref('')
     let imageRules = ref([
       (v) => !!v || "Images is required",
       (v) =>
         (v && /https?:\/\//.test(v)) ||
         "Images must be start with http:// ot https://",
     ])
-    let organizer = ref(dataStore.localData.uid)
+    let organizer = ref('')
    
 
-    let description = ref("The third installment of  which follows the continuing adventures of Newt Scamander.")
+    let description = ref('')
 
     let descriptionRules =ref( [
       (v) => !!v || "Description is required",
@@ -169,15 +178,14 @@ export default {
         
     ])
 
-    let date = ref(1)
+    let date = ref('')
     let dateRules = ref([
       (v) => !!v || "Date is required",
       (v) => (v && v.length >= 3) || "Date count must be number bigger than -1",
     ])
-    let people = ref("0")
+    let people = ref('')
     let peopleRules = ref([
-      (v) => !!v || "People description is required",
-      (v) => (v && v >= 0) || "People is required",
+      
     ])
 
     let validate = () => {     
@@ -189,20 +197,13 @@ export default {
         date: date.value, description: description.value, people: people.value,
       };
             
-        //check is movie in collection
-        const checkIsEventExist = eventStore.allEvents.some(x => x.title == title.value && x.image == image.value);
-        console.log(checkIsEventExist);
-
-       //show message alert
-       
-      
-      if (!checkIsEventExist) {
-            addData(newEventObj)
+    
+            editData(currentEventData.value.id ,newEventObj)
               .then((e) => {
-                console.log("Success add new event to collection", e)
+                console.log("Success edit event", e)
                  showAlert.value = true;
                 alertType.value = 'success'
-                message.value = 'Success add new event to collection'
+                message.value = 'Event was edit success'
                 setTimeout(() => {
                   message.value = 'You will be redirect to event page...'
                 }, 1500);
@@ -215,11 +216,7 @@ export default {
               showAlert.value = true;
           });
 
-      } else {
-         showAlert.value = true;
-          message.value = "This event, already exist!"
-        
-      }   
+    
           setTimeout(() => (message.value = showAlert.value = ''), 3000);
       }
     

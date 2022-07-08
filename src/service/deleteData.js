@@ -6,4 +6,4 @@ const deleteData = async (key) => {
 } 
 
 
-export default deleteData
+export { deleteData }

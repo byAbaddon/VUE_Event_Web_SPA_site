@@ -112,7 +112,8 @@
                         append-icon="mdi-square-edit-outline"
                         color=""
                         variant="outlined"
-                        to="/events/edit"
+                       
+                        :to="{ name: 'edit', params: { id: currentEventData.id }}"
                         >Edit event
                       </v-btn>
 
@@ -144,13 +145,19 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+
+import { ref, reactive, onMounted } from "vue";
+import { deleteData } from "@/service/deleteData";
 import { useDataStore } from "@/stores/userData";
 import { useEventStore } from "@/stores/events";
+import {  useRouter } from "vue-router";
 
 
+let router = useRouter()
 const userData = useDataStore();
-const events = useEventStore();
+let events = useEventStore()
+
+onMounted(() =>  useEventStore()  )  //TODO:
 
 const eventOwnerUid = ref(JSON.parse(localStorage.getItem("auth")).uid);
 let dialog = ref(false);
@@ -163,7 +170,18 @@ const showMoreDetails = (id) => {
 };
 
 
-const onDeleteEvent = (id) => console.log(id)
+const onDeleteEvent = id => {   //TODO:
+  deleteData(id)
+    .then(() => {
+      router.push('/')
+      setTimeout(() => router.push('/events'), 1000)
+        
+     
+     
+      console.log('Event must be deleted success.', )
+    })
+    .catch(e => console.log('Fail to delete event', e.error))
+}
 
  
 

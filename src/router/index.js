@@ -31,7 +31,7 @@ const routes = [
     
   },
   {
-    path: '/events/edit',
+    path: '/events/edit/:id',
     name: 'edit',
     component: () => import('../views/EditEventView.vue'),
     

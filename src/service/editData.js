@@ -3,10 +3,11 @@ import { doc, updateDoc } from "firebase/firestore";
 
 
 const editData = async (key, objectData) => {
-  const editDone = doc(db, "movies", key)
+  const editDone = doc(db, "events", key)
   await updateDoc(editDone, objectData)
+  return key
 }
 
 
 
-export default editData
+export { editData }
