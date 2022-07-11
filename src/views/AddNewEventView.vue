@@ -19,6 +19,7 @@
                 append-icon="mdi-alpha-t-circle-outline"
                 required
                 variant="outlined"
+                maxlength="30"
               ></v-text-field>
 
               <v-text-field

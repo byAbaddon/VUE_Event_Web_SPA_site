@@ -26,19 +26,19 @@
       <v-row class="d-flex align-center ma-4 mt-0">
         <v-col v-for="(event, index) in events.allEvents" :key="index">
           <v-card
-            class="mx-auto bg-grey-lighten-3 mt-12"
+            class="mx-auto bg-grey-darken-3 mt-12"
             min-width="300"
             max-width="300"
           >
-            <v-card-title
+            <v-card-title class=""
               ><span class="mx-auto">{{ event.title }}</span></v-card-title
             >
-            <v-img :src="event.image" height="200px" cover></v-img>
+            <v-img :src="event.image" height="200" cover></v-img>
 
             <v-card-subtitle> </v-card-subtitle>
 
             <v-card-actions>
-              <p class="">Click button to see...</p>
+              <p class="text-body-2 ml-2">Click button to see...</p>
               <v-spacer></v-spacer>
 
               <!-- dialog-->
@@ -47,8 +47,10 @@
                   transition="dialog-center-transition"
                   v-model="dialog"
                   max-width="600"
+                  min-width="600"
                   max-height="600"
-                  class="bg-white"
+                  min-height="600"
+                  class="bg-grey-darken-3" 
                 >
                   <template v-slot:activator="{ props }">
                     <v-btn
@@ -63,40 +65,41 @@
                     </v-btn>
                   </template>
 
-                  <div>
-                    <v-card-title>  {{currentEventData.title}} </v-card-title>
-                    <v-img :src="currentEventData.image" height="200px" cover></v-img>
+                
+                    <v-card-title class="mx-auto mb-8 text-decoration-underline">  {{currentEventData.title}} </v-card-title>
+                    <v-img :src="currentEventData.image" width="400"   height="200" cover  class="mx-auto" ></v-img>
                     <v-divider></v-divider>
 
                     <v-card-text>
-                      <h3 class="text-center mb-1 text-decoration-underline">
-                        Description
+                      <h3 class=" mb-1 text-decoration-underline">
+                        Description:
                       </h3>
-                      <p>{{ currentEventData.description }}</p>
-                      <h3 class="text-center mb-1 text-decoration-underline">
+                      <p class="text-teal"  >{{ currentEventData.description }}</p>
+                      <h3 class=" mb-1 text-decoration-underline">
                         Date:
-                        <span class="font-weight-light text-blue">
+                        <span class="font-weight-light text-teal">
                           {{ currentEventData.date }}</span
                         >
                       </h3>
-                      <h3 class="text-center mb-1 text-decoration-underline">
+                      <h3 class=" mb-1 text-decoration-underline">
                         People interested in:
-                        <span class="font-weight-light text-blue">{{
+                        <span class="font-weight-light text-teal">{{
                           currentEventData.people
                         }}</span>
                       </h3>
-                      <h3 class="text-center mb-1 text-decoration-underline">
+                      <h3 class=" mb-1 text-decoration-underline">
                         Organizer:
-                        <span class="font-weight-light text-blue">
-                          {{ currentEventData.organizer }}</span
+                        <span class="font-weight-light text-teal">
+                          {{ userData.data.displayName }}</span
                         >
                       </h3>
                     </v-card-text>
 
                     <v-card-actions class="d-flex justify-space-around">
+                      
                       <v-btn
                         v-show="eventOwnerUid != currentEventData.organizer"
-                        class="bg-primary pa-2"
+                        class="bg-primary pa-2 mr-12"
                         rounded="4"
                         append-icon="mdi-thumb-up"
                         color=""
@@ -104,7 +107,8 @@
                       >
                         Join the event
                       </v-btn>
-
+                    
+                
                       <v-btn
                         v-show="eventOwnerUid == currentEventData.organizer"
                         class="bg-warning pa-2"
@@ -116,7 +120,7 @@
                         :to="{ name: 'edit', params: { id: currentEventData.id }}"
                         >Edit event
                       </v-btn>
-
+                    
                        <v-btn
                         v-show="eventOwnerUid == currentEventData.organizer"
                         class="bg-error pa-2"
@@ -126,14 +130,20 @@
                         @click="onDeleteEvent(currentEventData.id)"
                         >Delete event
                       </v-btn>
-                      
-                    </v-card-actions>
-                  </div>
-                  <v-spacer></v-spacer>
 
-                  <v-btn color="green darken-1" text @click="dialog = false">
-                    Agree
-                  </v-btn>
+                         <v-btn 
+                         width="100"
+                        class="bg-success pa-2"
+                        rounded="4"
+                        append-icon="mdi-exit-run"
+                        variant="outlined"
+                        @click="dialog = false"
+                        >Exit
+                      </v-btn>
+
+                    </v-card-actions>
+                
+                 
                 </v-dialog>
               </v-row>
             </v-card-actions>
