@@ -191,7 +191,7 @@ export default {
 
     let validate = () => {     
       //scroll automatic to bottom page to show result message
-       scroll(0, 9999)
+      //  scroll(0, 9999)
       
       const newEventObj = {
         title: title.value, image: image.value, organizer: organizer.value,

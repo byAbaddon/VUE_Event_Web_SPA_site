@@ -145,8 +145,7 @@ export default {
     let showAlert = ref(false);
     let message = ref("");
     let alertType = ref('error')
-
-
+    
     let title = ref("E.T.")
     let titleRules =ref( [
       (v) => !!v || "Title is required",
@@ -185,7 +184,7 @@ export default {
 
     let validate = () => {     
       //scroll automatic to bottom page to show result message
-       scroll(0, 9999)
+      //  scroll(0, 9999)
       
       const newEventObj = {
         title: title.value, image: image.value, organizer: organizer.value,
@@ -207,9 +206,7 @@ export default {
                 setTimeout(() => {
                   message.value = 'You will be redirect to event page...'
                 }, 1500);
-              setTimeout(() => {
-                router.push("/events"); //redirect ot movies Page   TODO
-              }, 3500);
+            
             })
             .catch((e) => {
               message.value = e
@@ -221,11 +218,15 @@ export default {
           message.value = "This event, already exist!"
         
       }   
-          setTimeout(() => (message.value = showAlert.value = ''), 3000);
-      }
-    
 
-   const  exit = () => router.push("/events");  
+      setTimeout(() => {
+        message.value = showAlert.value = ''
+         router.push("/events"); //redirect ot movies Page   TODO
+      }, 3000);
+
+      }
+  
+   const exit = () => router.push("/events")  
      
    
     return {
