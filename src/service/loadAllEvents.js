@@ -2,9 +2,9 @@ import { db} from '@/service/sdk'
 import { collection, getDocs, query, orderBy } from "firebase/firestore";  
 
                            
- let events = []
+let events = []
 
-const getAllEventsFromBase = async () => {
+const loadAllEvents = async () => {
   events = []
   const getMoviesCollection = collection(db, "events")                                     
   const sortedMovieCollection = query( getMoviesCollection, orderBy("people", ))  //'desc    
@@ -23,4 +23,4 @@ const getAllEventsFromBase = async () => {
 }
  
 
-export  {getAllEventsFromBase, events } 
+export  {loadAllEvents, events } 

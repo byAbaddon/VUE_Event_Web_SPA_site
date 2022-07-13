@@ -1,25 +1,21 @@
 import { defineStore } from 'pinia'
-import { db} from '@/service/sdk'      
-import { collection, onSnapshot } from "firebase/firestore";
-import { ref, computed } from "vue";
+import { loadAllEvents, events } from "@/service/loadAllEvents";
 
-export const useEventStore = defineStore('events', () => {
 
-  let allEvents = ref([])
-    onSnapshot(collection(db, "events"), (doc) => doc.docs.forEach(x => {
-      let checkIsExist = allEvents.value.find(event => event.id == x.id)
-      if (!checkIsExist) {
-        const event = Object.assign({ id: x.id }, x.data())
-        allEvents.value.push(event) 
-      }
-    }))
- 
+export const useEventStore = defineStore('events', {
+  state: () => ({
+    allEvents: []
 
-  // const computedAllEvents = computed(() => allEvents.value)
+  }),
   
+  getters: {},
+  
+  actions: {
+     updateEvents() {
+      loadAllEvents().then(data => this.allEvents = data)
+    } 
+  },
 
-  return {
-    allEvents,
-    // computedAllEvents
-  }
+
 })
+

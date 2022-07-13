@@ -156,7 +156,7 @@
 
 <script setup>
 
-import { onMounted, ref, } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { deleteData } from "@/service/deleteData";
 import { useDataStore } from "@/stores/userData";
 import { useEventStore } from "@/stores/events";
@@ -164,13 +164,14 @@ import {  useRouter } from "vue-router";
 
 
 let router = useRouter()
-const userData = useDataStore();
+const userData = ref(useDataStore())
 const events = useEventStore()
 
+onMounted(() =>  events.updateEvents())
 
-onMounted( () =>  events )
-
-
+watch(events.allEvents, (n, o) => {
+  console.log('new ', n, '\n', 'old ', o);
+})
 
 const eventOwnerUid = ref(JSON.parse(localStorage.getItem("auth")).uid);
 let dialog = ref(false);
@@ -185,9 +186,9 @@ const showMoreDetails = (id) => {
 
 const onDeleteEvent = id => {  
   deleteData(id)
-    .then(() => {     
-      // router.push('/')
-      setTimeout(() =>dialog.value = false, 1000)
+    .then(() => {   
+      events.updateEvents()
+      setTimeout(() =>dialog.value = false, 10)
       console.log('Event was be deleted success.',)
       // events.computedAllEvents
       
@@ -195,10 +196,7 @@ const onDeleteEvent = id => {
     .catch(e => console.log('Fail to delete event', e.message))
 }
 
- 
 
-
-// console.log(events.allEvents);
 </script>
 
  <style scoped>
