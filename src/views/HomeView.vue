@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <!--   text  -->
+    <!-- text -->
     <div class="text">
       <h2 class="text-teal">The events that will blow your mind!</h2>
       <p class="text-white">Join our community.</p>
