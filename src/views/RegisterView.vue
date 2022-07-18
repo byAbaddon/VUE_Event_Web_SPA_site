@@ -3,22 +3,22 @@
     <v-col cols="12">
       <v-container class="">
         <v-row class="justify-center">
-          <v-col cols="3" >
-               <!-- image -->
-        <div class="mt-12 hidden-xs-only">
-          <v-img
-            src="../assets/images/registerPic.jpeg"
-            alt="registerPicture"
-            style="background: linear-gradient(red , 0, black)"
-            max-height="600"
-            max-width="250"
-            min-height="520"
-          >
-          </v-img>
-        </div>
- 
+             <!-- image -->
+          <v-col cols="3" class=" hidden-xs ">   
+            <div class="mt-12" >
+              <v-img
+                src="../assets/images/registerPic.jpeg"
+                alt="registerPicture"
+                style="background: linear-gradient(red , 0, black)"
+                max-height="600"
+                max-width="250"
+                min-height="520"
+              >
+              </v-img>
+            </div>
           </v-col>
-   <v-col cols="5">
+
+  <v-col cols="" sm="5">
         <!--form  -->
         <div class="d-flex ma-6 mt-12">
           <v-form ref="form" v-model="valid" lazy-validation>

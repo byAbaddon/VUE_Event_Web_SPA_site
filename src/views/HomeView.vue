@@ -1,7 +1,10 @@
 <template>
+<v-row>
   <div class="home">
+   
     <!-- text -->
-    <div class="text">
+     <v-col>
+        <div class="text" >
       <h2 class="text-teal">The events that will blow your mind!</h2>
       <p class="text-white">Join our community.</p>
       <p class="text-yellow-darken-4" style="padding-left: 5%">
@@ -15,10 +18,12 @@
       <p class="text-deep-orange-accent-4 pb-12" style="padding-left: 25%">
         Enjoy the life!
       </p>
-    </div>
+        </div>
+     </v-col>
 
     <!--   carousel  -->
-    <div>
+    <v-col    >
+       <div >
       <v-card elevation="24" max-width="500" class="mt-11 ml-12">
         <v-carousel
           height="260"
@@ -36,22 +41,27 @@
           </v-carousel-item>
         </v-carousel>
       </v-card>
-    </div>
-
+       </div>
+    </v-col>
     <!--   logo image   -->
-    <div>
+    <v-col>
+        <div>
       <img
         :src="require('../assets/images/events.png')"
         class="event-image"
         alt="image"
       />
-    </div>  
-   
+        </div>  
+   </v-col>
+
    <!--text effect -->
-   <h1>Discover more Special Events...</h1>
+   <v-col>
+      <h1>Discover more Special Events...</h1>
+   </v-col>
 
     <!--  section text  --> 
-    <div class="second_text text-white ">
+    <v-col>
+      <div class="second_text text-white ">
     
       <section class="pa-1 mb-1">
           <h2 class="text-green text-center ma-8 pt-4">Accents:</h2>
@@ -113,14 +123,18 @@
         </article>
 
        <!--  article pics  -->        
-          <article v-for="(i) in 3" :key="i" >
+       <v-col >
+          <article v-for="(i) in 3" :key="i">
           <v-img :src="require(`@/assets/homePageImages/wow${i}.jpg`)" >{{i}}</v-img>
         </article>
+       </v-col>
 
       </section>
+      </div>
+    </v-col>
+
     </div>
-     
-  </div>
+  </v-row>
 </template>
 
 
