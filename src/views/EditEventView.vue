@@ -194,7 +194,7 @@ export default {
       //  scroll(0, 9999)
       
       const newEventObj = {
-        title: title.value, image: image.value, organizer: organizer.value,
+        title: title.value.toUpperCase(), image: image.value, organizer: organizer.value,
         date: date.value, description: description.value, people: people.value,
       };
             
@@ -208,9 +208,6 @@ export default {
                 setTimeout(() => {
                   message.value = 'You will be redirect to event page...'
                 }, 1500);
-              setTimeout(() => {
-                router.push("/events"); //redirect ot movies Page   TODO
-              }, 3500);
             })
             .catch((e) => {
               message.value = e
@@ -218,11 +215,14 @@ export default {
           });
 
     
-          setTimeout(() => (message.value = showAlert.value = ''), 3000);
+      setTimeout(() => {
+                message.value = showAlert.value = ''
+                 router.go(-1);   //redirect ot movies Page   
+             }, 3000);
       }
     
 
-   const  exit = () => router.push("/events");  
+   const  exit = () => router.go(-1);  
      
    
     return {

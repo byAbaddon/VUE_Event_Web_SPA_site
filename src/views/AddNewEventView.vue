@@ -187,8 +187,8 @@ export default {
       //  scroll(0, 9999)
       
       const newEventObj = {
-        title: title.value, image: image.value, organizer: organizer.value,
-        date: date.value, description: description.value, people: people.value,
+        title: title.value.toUpperCase(), image: image.value, organizer: organizer.value,
+        date: date.value, description: description.value, people: people.value, voters: []
       };
             
         //check is movie in collection
@@ -221,7 +221,7 @@ export default {
 
       setTimeout(() => {
         message.value = showAlert.value = ''
-         router.push("/events"); //redirect ot movies Page   TODO
+         router.push("/events"); //redirect ot movies Page   
       }, 3000);
 
       }

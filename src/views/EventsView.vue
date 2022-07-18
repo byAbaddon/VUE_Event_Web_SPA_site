@@ -4,7 +4,7 @@
       <h3 class="title mt-2 pa-2 text-center text-blue">
         {{
           `${
-            !userData.isAuth ? "Cannot find any event..." : "Organize New Event"
+            !userDataStore.isAuth ? "Cannot find any event..." : "Organize New Event"
           }`
         }}
         <span>
@@ -15,7 +15,7 @@
             size="small"
             to="/events/add"
           >
-            {{ `${!userData.isAuth ? "Create first" : "Create"}` }}</v-btn
+            {{ `${!userDataStore.isAuth ? "Create first" : "Create"}` }}</v-btn
           >
         </span>
       </h3>
@@ -24,7 +24,7 @@
     <!-- list of events -->
     <div>
       <v-row class="d-flex align-center ma-4 mt-0">
-        <v-col v-for="(event, index) in events.allEvents" :key="index">
+        <v-col v-for="(event, index) in eventStore.allEvents" :key="index">
           <v-card
             class="mx-auto bg-grey-darken-3 mt-12"
             min-width="300"
@@ -90,7 +90,7 @@
                       <h3 class=" mb-1 text-decoration-underline">
                         Organizer:
                         <span class="font-weight-light text-teal">
-                          {{ userData.data.displayName }}</span
+                          {{ userDataStore.data.displayName }}</span
                         >
                       </h3>
                     </v-card-text>
@@ -104,6 +104,7 @@
                         append-icon="mdi-thumb-up"
                         color=""
                         variant="outlined"
+                        @click="joinTheEvent(currentEventData.id)"
                       >
                         Join the event
                       </v-btn>
@@ -116,7 +117,7 @@
                         append-icon="mdi-square-edit-outline"
                         color=""
                         variant="outlined"
-                       
+                        @click="editEvent"
                         :to="{ name: 'edit', params: { id: currentEventData.id }}"
                         >Edit event
                       </v-btn>
@@ -127,7 +128,7 @@
                         rounded="4"
                         append-icon="mdi-delete"
                         variant="outlined"
-                        @click="onDeleteEvent(currentEventData.id)"
+                        @click="onDeleteEventDialog"
                         >Delete event
                       </v-btn>
 
@@ -142,8 +143,28 @@
                       </v-btn>
 
                     </v-card-actions>
+
+                <!-- delete dialog confirm -->          
+                   <div class="text-center">
+                       <v-dialog
+                       transition="dialog-top-transition"
+                         v-model="confirmDialog"
+                         activator="parent"
+                       >
+                         <v-card>
+                           <v-card-text class="text-black font-italic">
+                            {{deleteEventMessage}}
+                           </v-card-text>
+                           <v-card-actions class="d-flex justify-space-around ">
+                             <v-btn v-show="hideBtn" color="error "  @click="confirmDialog = false">No</v-btn>
+                             <v-btn v-show="hideBtn" color="green"   @click="[ deleteEvent(currentEventData.id)]" >Yes</v-btn>
+                           </v-card-actions>
+                         </v-card>
+                       </v-dialog>
+                   </div>
+
+                  <v-card-text v-show="true" class="mx-auto mt-2 text-yellow" >{{likeMessage}}</v-card-text>
                 
-                 
                 </v-dialog>
               </v-row>
             </v-card-actions>
@@ -158,39 +179,86 @@
 
 import { onMounted, ref, } from "vue";
 import { deleteData } from "@/service/deleteData";
+import { updateData } from "@/service/updateData";
 import { useDataStore } from "@/stores/userData";
 import { useEventStore } from "@/stores/events";
 import {  useRouter } from "vue-router";
 
 
 let router = useRouter()
-const userData = useDataStore()
-const events = useEventStore()
+const userDataStore = useDataStore()
+const eventStore = useEventStore()
 
-onMounted(() =>  events.updateEvents())
+onMounted(() =>  eventStore.updateEvents())
 
 
 const eventOwnerUid = ref(JSON.parse(localStorage.getItem("auth")).uid);
 let dialog = ref(false);
+let confirmDialog = ref(false)
 let currentEventData = ref('')
+let deleteEventMessage = ref('Are you sure to want to delete this event ?')
+let hideBtn = ref(true)
+let likeMessage = ref('')
 
 const showMoreDetails = (id) => {
-  const getEventData = events.allEvents.find(x => x.id == id)
+  const getEventData = eventStore.allEvents.find(x => x.id == id)
   // const { date, description, image, organizer, rating, title } = currentEventData
   currentEventData.value = getEventData
 };
 
-const onDeleteEvent = id => {  
+const editEvent = () => {
+  console.log('edit...........');
+  dialog.value = false
+}
+
+const joinTheEvent = (id) => {
+  let currentEvent = eventStore.allEvents.filter(x => x.id == id)[0]
+  let isVote = currentEvent.voters.find(x => x ==  eventOwnerUid.value)
+
+  if (!isVote) {
+    currentEvent.voters.push(eventOwnerUid.value)
+    currentEvent.people++
+    updateData(id, currentEvent)
+     likeMessage.value = 'Thank you for like!'
+     console.log('Thank you for like!') 
+  } else {
+    likeMessage.value = 'You have already voted!'
+    console.log('You have already voted!');
+  }
+   
+  
+  setTimeout(() => {
+    dialog.value = false
+    likeMessage.value = ''
+  } , 2500)
+}
+
+const onDeleteEventDialog = () => {  
+    confirmDialog.value = true
+}
+
+const deleteEvent = id => {
+  hideBtn.value = false
   deleteData(id)
     .then(() => {   
-      events.updateEvents()
-      setTimeout(() => dialog.value = false, 10)
+      eventStore.updateEvents()
+      deleteEventMessage.value = 'Event was be deleted success.'
       console.log('Event was be deleted success.',)
-      
-      
+  
     })
-    .catch(e => console.log('Fail to delete event', e.message))
-}
+    .catch(e => {
+      deleteEventMessage.value = 'Fail to delete event', e.message
+      console.log('Fail to delete event', e.message)
+    })
+
+  setTimeout(() => {
+        deleteEventMessage.value = 'Are you sure to want to delete this event ?'
+        hideBtn.value = true
+        dialog.value = false
+        confirmDialog.value = false
+      }, 2500);
+    }
+
 
 
 </script>
