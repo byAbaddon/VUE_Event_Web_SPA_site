@@ -1,26 +1,54 @@
 <template>
   <v-app-bar color="blue-grey-darken-3"  density="compact">
+  
+      <!-- phone menu  -->    
+      <v-menu transition="scale-transition"   >
+        <template v-slot:activator="{ props }">
+          <v-app-bar-nav-icon  v-bind="props"   class="hidden-md-and-up"  >
+          </v-app-bar-nav-icon>
+        </template>
+  
+        <v-list>
+          <v-list-item  v-for="(item, i) in !userData.isAuth ? items : items2" :key="i" >
+          
+          <v-list-item-title>
+            <v-btn :to="`${ item == 'Home' ? item = '/' : null,  item.toLowerCase()}`"  //TODO:
+             variant="plain">{{item == '/' ? item = 'Home' : item}}  </v-btn>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    
+
+
     <v-icon color="green darken-2">mdi-eslint</v-icon> 
     <v-app-bar-title class="ml-6">Hello, {{userData.isAuth ? userData.data.displayName : 'Anonymous'}}</v-app-bar-title>
-      <v-btn to="/" >Home</v-btn>
+
+   
+       <v-btn class="hidden-sm-and-down"   to="/" >Home</v-btn>
      
-      <div v-if="userData.isAuth" >
+      <div v-if="userData.isAuth"  class="hidden-sm-and-down">
          <v-spacer></v-spacer>
           <v-btn  to="/events">Events</v-btn>
           <v-btn  to="/about">About</v-btn>
           
       </div>
-     
-
+      
       <v-spacer></v-spacer>
-      <v-btn  v-if="!userData.isAuth" to="/login">Login</v-btn>
-      <v-btn  v-else @click="userData.logout"  to="/">Logout</v-btn>
+
+      <v-btn  class="hidden-sm-and-down" v-if="!userData.isAuth" to="/login">Login</v-btn>
+      <v-btn  class="hidden-sm-and-down" v-else @click="userData.logout"  to="/">Logout</v-btn>
+     
+      
   </v-app-bar>
 </template>
 
 
 <script setup>
 import { useDataStore } from "@/stores/userData";
-const userData = useDataStore()
 
+
+const userData = useDataStore()
+const items =  ['Home', 'Login',]
+const items2 = ['Home', 'Events', 'About', 'Logout']
 </script>
