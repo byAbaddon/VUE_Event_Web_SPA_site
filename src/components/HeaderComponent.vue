@@ -12,7 +12,8 @@
           <v-list-item  v-for="(item, i) in !userData.isAuth ? items : items2" :key="i" >
           
           <v-list-item-title>
-            <v-btn :to="`${ item == 'Home' ? item = '/' : null,  item.toLowerCase()}`"  //TODO:
+            <!-- //TODO:-->
+            <v-btn :to="`${ item == 'Home' ? item = '/' : null,  item.toLowerCase()}`"  
              variant="plain">{{item == '/' ? item = 'Home' : item}}  </v-btn>
             </v-list-item-title>
           </v-list-item>
