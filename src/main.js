@@ -12,3 +12,5 @@ createApp(App).use(createPinia())
   .use(router)
   .use(vuetify)
   .mount('#app')
+
+//add router guard
