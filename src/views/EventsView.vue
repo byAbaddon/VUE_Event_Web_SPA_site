@@ -47,9 +47,7 @@
                   transition="dialog-center-transition"
                   v-model="dialog"
                   max-width="600"
-                  min-width="600"
                   max-height="600"
-                  min-height="600"
                   class="bg-grey-darken-3" 
                 >
                   <template v-slot:activator="{ props }">
