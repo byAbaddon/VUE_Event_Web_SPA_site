@@ -205,7 +205,7 @@ const showMoreDetails = (id) => {
 };
 
 const editEvent = () => {
-  console.log('edit...........');
+  // console.log('edit...........');
   dialog.value = false
 }
 

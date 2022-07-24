@@ -69,8 +69,8 @@
                 :counter="4"
                 name="i"
                 label="Description"
-              
                 variant="outlined"
+                :v-model="textAreaCount = description.length < 200" 
               ></v-textarea>
           <div>
               <div class="text-caption">People who like event/default zero</div>
@@ -89,7 +89,7 @@
               </v-slider>
            </div>
               <v-btn
-                :disabled=" title.length < 2 || description.length < 4 || !date.length || !/https?:\/\//.test(image)"
+                :disabled=" title.length < 2 || description.length < 4 || !date.length || !/https?:\/\//.test(image) || !textAreaCount"
                 color="success"
                 :elevation="12"
                 class="mr-4"
@@ -176,7 +176,7 @@ export default {
     let descriptionRules =ref( [
       (v) => !!v || "Description is required",
       (v) =>(v && v.length > 3) || "Description must be more than 4 characters",
-        
+      (v) => v.length < 200 || "Description must be less 200 characters",
     ])
 
     let date = ref('')

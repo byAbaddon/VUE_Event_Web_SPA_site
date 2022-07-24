@@ -56,21 +56,23 @@
                 variant="outlined"
               ></v-text-field>
 
+
+
+             <!-- textarea -->
               <v-textarea
                 color="blue"
                 no-resize
-                rows="3"
-                 row-height="15"
+                rows="4"
+                row-height="15"
                 outlined
                 required
                 append-icon="mdi-book-open-variant"
                 v-model="description"
                 :rules="descriptionRules"
                 :counter="4"
-                name="i"
                 label="Description"
-              
                 variant="outlined"
+                :v-model="textAreaCount = description.length < 200" 
               ></v-textarea>
           <div>
               <div class="text-caption">People who like event/default zero</div>
@@ -90,7 +92,8 @@
               </v-slider>
            </div>
               <v-btn
-                :disabled=" title.length < 2 || description.length < 4 || !date.length || !/https?:\/\//.test(image) || showAlert"
+                :disabled="title.length < 2 || description.length < 4 || !date.length ||
+                       !/https?:\/\//.test(image) || !descriptionRules || !textAreaCount || showAlert"
                 color="success"
                 :elevation="12"
                 class="mr-4"
@@ -133,7 +136,7 @@ import { addData} from "@/service/addData";
 import { useRouter } from 'vue-router'
 import { useDataStore } from "@/stores/userData";
 import { useEventStore } from "@/stores/events";
-import { ref } from "vue";
+import { ref} from "vue";
 
 
 export default {
@@ -165,10 +168,10 @@ export default {
 
     let description = ref("The third installment of  which follows the continuing adventures of Newt Scamander.")
 
-    let descriptionRules =ref( [
+    let descriptionRules = ref( [
       (v) => !!v || "Description is required",
-      (v) =>(v && v.length > 3) || "Description must be more than 4 characters",
-        
+      (v) => v && v.length > 3 || "Description must be more 4 characters",
+      (v) => v.length < 200 || "Description must be less 200 characters",
     ])
 
     let date = ref(1)
@@ -181,6 +184,9 @@ export default {
       (v) => !!v || "People description is required",
       (v) => (v && v >= 0) || "People is required",
     ])
+
+
+ 
 
     let validate = () => {     
       //scroll automatic to bottom page to show result message
