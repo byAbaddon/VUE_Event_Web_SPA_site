@@ -9,12 +9,12 @@
         </template>
   
         <v-list>
-          <v-list-item  v-for="(item, i) in !userData.isAuth ? items : items2" :key="i" >
+          <v-list-item  v-for="(path, i) in !userData.isAuth ? items : items2" :key="i" >
           
           <v-list-item-title>
-            <!-- //TODO:-->
-            <v-btn :to="`${ item == 'Home' ? item = '/' : null,  item.toLowerCase()}`"  
-             variant="plain">{{item == '/' ? item = 'Home' : item}}  </v-btn>
+            <v-btn
+             @click="onMenuBtn(path)"
+             variant="plain"> {{path}}  </v-btn>
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -46,10 +46,26 @@
 
 
 <script setup>
+import { useRouter} from 'vue-router'  
 import { useDataStore } from "@/stores/userData";
 
 
 const userData = useDataStore()
 const items =  ['Home', 'Login',]
 const items2 = ['Home', 'Events', 'About', 'Logout']
+const router = useRouter()
+
+const onMenuBtn = path => {
+  if (path == 'Home') {
+    router.push('/')  
+  } 
+  else if (path == 'Logout') {
+    router.push('/')  
+    userData.logout()
+  } else {
+    router.push('/' + path.toLowerCase()) 
+  } 
+}  
+  
+  
 </script>
