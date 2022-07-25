@@ -8,7 +8,7 @@
             <h1>EDIT EVENT</h1> 
            </v-col>
           <!--form  -->
-          <v-col cols="6" class="mx-auto">
+          <v-col cols="12" sm="5"  class="mx-auto">
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
                 color="blue"
