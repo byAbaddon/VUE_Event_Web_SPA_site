@@ -1,5 +1,14 @@
 # event_web_spa_vue3_comp_pinia
 
+Firebase Hosting Preview channels :
+
+
+video intro: https://youtu.be/
+Using vuex pinia 3 composition  and vuetify 3.0 beta
+Support phone responsibility.
+
+
+
 ## Project setup
 ```
 yarn install
