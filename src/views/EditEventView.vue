@@ -136,6 +136,7 @@ import { ref, onMounted } from "vue";
 
 export default {
   setup() {
+    scroll(0,0)
     let eventStore = useEventStore()
     let router = useRouter()
     let route = useRoute()
