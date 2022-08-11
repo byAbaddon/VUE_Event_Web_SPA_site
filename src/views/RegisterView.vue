@@ -73,19 +73,15 @@
             </v-text-field>
 
             <v-checkbox
-              :v-model="checkbox"
-              :rules="[
-                (v) =>
-                  !!v ||
-                  'You must fill all required fields and agree to continue!',
-              ]"
+              v-model="checkbox"
+              :rules= "checkboxRules"
               label="Do you agree?"
               required
             ></v-checkbox>
 
             <v-btn
               :disabled="
-                !valid ||
+                !checkbox  ||
                 name.length < 2 ||
                 email.length < 7 ||
                 password != confirmPassword
@@ -128,13 +124,12 @@
 
 
 <script>
-// import registrationNewUser from "@/service/register"
-// import updateUserProfile from "@/service/updateUserProfile"
+import registrationNewUser from "@/service/register"
+import updateUserProfile from "@/service/updateUserProfile"
 
 export default {
   data: () => ({
     valid: true,
-    checkbox: false,
     showPass: false,
     showPassTwo: false,
     showErrorAlert: false,
@@ -164,6 +159,9 @@ export default {
       (v) => !!v || "Re password is required",
       (v) => (v && v.length > 5) || "Confirmed password must be equal",
     ],
+    checkbox: false,
+    checkboxRules: [  (v) => !!v || "You must agree for success registration!",]
+    
   }),
 
   methods: {
@@ -176,7 +174,7 @@ export default {
           updateUserProfile(this.name, this.photoURL); //update profile /add name and photo
 
           if (message == "success") {
-            this.$router.push("/movies"); //redirect to page
+            this.$router.push("/events"); //redirect to page
             this.$root.$emit("user-data", this.name, this.photoURL);
           } else {
             this.errorMessage = message;

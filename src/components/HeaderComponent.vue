@@ -20,9 +20,12 @@
         </v-list>
       </v-menu>
     
-
-
-    <v-icon color="green darken-2">mdi-eslint</v-icon> 
+     <v-avatar size="36px" class="ml-1">
+        <v-icon v-if="!userData.isAuth" color="red darken-2">mdi-eslint</v-icon>     
+        <v-img  v-else  alt="Avatar" :src="userData.data.photoURL"> </v-img>
+        <v-icon v-if="!userData.data.photoURL && userData.isAuth" color="info" icon="mdi-account-circle"></v-icon>
+     </v-avatar>
+    <!-- <v-icon v-else color="red darken-2">{{userData.data.photoURL }}</v-icon>  -->
     <v-app-bar-title class="ml-6">Hello, {{userData.isAuth ? userData.data.displayName : 'Anonymous'}}</v-app-bar-title>
 
    
