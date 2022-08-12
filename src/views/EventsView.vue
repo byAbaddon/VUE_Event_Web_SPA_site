@@ -1,5 +1,6 @@
 <template>
   <div>
+<!-- text row one--> 
     <div class="mt-4 d-flex justify-space-around">
       <h3 class="title mt-2 pa-2 text-center text-blue">
         {{
@@ -20,6 +21,32 @@
         </span>
       </h3>
     </div>
+
+<!-- text row two-->
+    <v-row>
+      <v-col cols="12" sm="4">
+        <div class="ml-12 mt-6">
+          <p>Event numbers: {{eventStore.allEvents.length}}</p>
+          </div>
+      </v-col>
+
+         <v-col cols="12" sm="4">
+        <div class="text-center text-lime-darken-1 mt-6"> Show events:
+          <v-btn
+           min-width="90"
+           @click="onChangeEvents"
+           class="ml-2 " size="small" with="11"  :color="`${eventOwner == 'all' ? 'blue-darken-4':'teal-darken-3'}`">{{eventOwner}}</v-btn>
+        </div>
+      </v-col>
+      
+           <v-col cols="12" sm="4">
+        <div class="float-end mt-6 mr-12 ">
+          <p class="">Owner: {{userDataStore.data.displayName}}</p>
+          </div>
+      </v-col>
+
+
+    </v-row>
 
     <!-- list of events -->
     <div>
@@ -197,6 +224,7 @@ let currentEventData = ref('')
 let deleteEventMessage = ref('Are you sure to want to delete this event ?')
 let hideBtn = ref(true)
 let likeMessage = ref('')
+const eventOwner = ref('only my')
 
 const showMoreDetails = (id) => {
   const getEventData = eventStore.allEvents.find(x => x.id == id)
@@ -257,7 +285,17 @@ const deleteEvent = id => {
       }, 2500);
     }
 
-
+const onChangeEvents = () => {
+if (eventOwner.value == 'only my') {
+  eventOwner.value = 'all'
+  eventStore.updateEvents()
+} else {
+  eventOwner.value = 'only my'
+   eventStore.allEvents = eventStore.allEvents.filter(x => x.organizer == userDataStore.data.uid)
+}
+  
+ 
+}
 
 </script>
 
