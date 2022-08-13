@@ -26,16 +26,16 @@
        <div >
       <v-card elevation="24" max-width="500" :class="this.$vuetify.display.mobile ? 'mt-11 ml-1' : 'mt-11 ml-12'">
         <v-carousel
-          height="260"
+          :height="this.$vuetify.display.mobile ? 210 : 246"
           cycle
           :continuous="false"
           :show-arrows="false"
           hide-delimiters
         >
-          <v-carousel-item v-for="i in 18" :key="i">
+          <v-carousel-item v-for="i in 14" :key="i">
             <v-sheet>
               <div class="d-flex fill-height justify-center align-center">
-                <v-img :src="require(`@/assets/slides/${i}.jpg`)"></v-img>
+                <v-img cover :src="require(`@/assets/slides/${i}.jpg`)"></v-img>
               </div>
             </v-sheet>
           </v-carousel-item>

@@ -23,30 +23,14 @@
     </div>
 
 <!-- text row two-->
-    <v-row>
-      <v-col cols="12" sm="4">
-        <div class="ml-12 mt-6">
-          <p>Event numbers: {{eventStore.allEvents.length}}</p>
-          </div>
-      </v-col>
-
-         <v-col cols="12" sm="4">
-        <div class="text-center text-lime-darken-1 mt-6"> Show events:
+      <div class="text-center text-lime-darken-1 mt-6"> Total Events numbers:
+         <span class="text-red">{{eventStore.allEvents.length ? eventStore.allEvents.length : 0}}</span>
           <v-btn
            min-width="90"
            @click="onChangeEvents"
            class="ml-2 " size="small" with="11"  :color="`${eventOwner == 'all' ? 'blue-darken-4':'teal-darken-3'}`">{{eventOwner}}</v-btn>
         </div>
-      </v-col>
-      
-           <v-col cols="12" sm="4">
-        <div class="float-end mt-6 mr-12 ">
-          <p class="">Owner: {{userDataStore.data.displayName}}</p>
-          </div>
-      </v-col>
-
-
-    </v-row>
+    
 
     <!-- list of events -->
     <div>
@@ -286,14 +270,17 @@ const deleteEvent = id => {
     }
 
 const onChangeEvents = () => {
-if (eventOwner.value == 'only my') {
-  eventOwner.value = 'all'
-  eventStore.updateEvents()
-} else {
-  eventOwner.value = 'only my'
-   eventStore.allEvents = eventStore.allEvents.filter(x => x.organizer == userDataStore.data.uid)
-}
   
+  if (eventOwner.value == 'only my') { 
+    eventOwner.value = 'all'
+    eventStore.allEvents = eventStore.allEvents.filter(x => x.organizer == userDataStore.data.uid)  
+       
+  } else {
+  eventStore.updateEvents()
+  eventOwner.value = 'only my'
+   
+}
+   
  
 }
 
