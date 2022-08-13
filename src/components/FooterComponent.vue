@@ -26,13 +26,12 @@ const onIconBtn = (e) => {
     </div>
 
     <div class="text-white pt-0">
-      Orci varius natoque penatibus et magnis dis parturient montes, nascetur
-      ridiculus mus.
+     WEB Single Page Application using Vue 3 Composition Vuex-Pinia
     </div>
    <v-divider></v-divider>
 
     <div class="text-white">
-      <strong>Vuetify</strong>
+      <strong>Vuetify 3.0 Beta</strong>
     </div>
  
   </v-footer>
