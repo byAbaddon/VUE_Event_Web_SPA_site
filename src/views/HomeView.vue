@@ -32,7 +32,7 @@
           :show-arrows="false"
           hide-delimiters
         >
-          <v-carousel-item v-for="i in 14" :key="i">
+          <v-carousel-item v-for="i in 13" :key="i">
             <v-sheet>
               <div class="d-flex fill-height justify-center align-center">
                 <v-img cover :src="require(`@/assets/slides/${i}.jpg`)"></v-img>
