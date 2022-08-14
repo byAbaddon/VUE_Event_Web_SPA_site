@@ -1,12 +1,9 @@
-# event_web_spa_vue3_comp_pinia
-
+Event_Web_SPA
 Firebase Hosting Preview channels :
-
-
-video intro: https://youtu.be/
-Using vuex pinia 3 composition  and vuetify 3.0 beta
+https://
+video intro: https://youtu.be/KXBntfgg1j4
+Using: vue3 composition vuex-pinia and vuetify 3.0 beta
 Support phone responsibility.
-
 
 
 ## Project setup
