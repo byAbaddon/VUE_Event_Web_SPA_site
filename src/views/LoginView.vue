@@ -66,7 +66,6 @@
             class="bg-blue white--text"
             :disabled="showProgressCircular"
             elevation="8"
-            :loading="showProgressCircular"
             @click="login"
             >Login
           </v-btn>
@@ -126,9 +125,9 @@ export default {
       ])
     );
 
-    let login = () => {
+    let login = () => {    
       showProgressCircular.value = true;
-      setTimeout(() => (showProgressCircular = false), 3000);
+      setTimeout(() => (showProgressCircular.value = false), 2000);
       //invoke login function
       singUser(email.value, pass.value).then((message) => {
         if (message == "success") {
@@ -144,10 +143,12 @@ export default {
            router.push('/events') //redirect to page
         } else {
           errorMessage.value = message;
-          showErrorAlert.value = true;
+          // showErrorAlert.value = true;
           setTimeout(() => (showErrorAlert.value = false), 3000);
+          
         }
       });
+          
     };
 
     return { email, pass, showPass, showProgressCircular, showErrorAlert, errorMessage, emailRules, passRules, login, };
