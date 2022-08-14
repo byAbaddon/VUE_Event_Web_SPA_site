@@ -108,8 +108,8 @@ export default {
     let showErrorAlert = ref(false);
     let showProgressCircular = ref(false);
     let showPass = ref(false);
-    let pass = ref("111111");
-    let email = ref("koko@abv.bg");
+    let pass = ref("");
+    let email = ref("");
     const router = useRouter()
 
     let emailRules = ref(

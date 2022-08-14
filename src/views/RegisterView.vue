@@ -135,26 +135,26 @@ export default {
     showErrorAlert: false,
     errorMessage: "",
 
-    name: "John",
+    name: "",
     nameRules: [
       (v) => !!v || "Name is required",
       (v) => (v && v.length >= 2) || "Name must be that more 1 characters",
     ],
 
-    photoURL: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
+    photoURL: "",
 
-    email: "koko@abv.bg",
+    email: "",
     emailRules: [
       (v) => !!v || "E-mail is required",
       (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
 
-    password: "111111",
+    password: "",
     passwordRules: [
       (v) => !!v || "Password is required",
       (v) => (v && v.length > 5) || "Password must be more than 5 chars",
     ],
-    confirmPassword: "111111",
+    confirmPassword: "",
     confirmPasswordRules: [
       (v) => !!v || "Re password is required",
       (v) => (v && v.length > 5) || "Confirmed password must be equal",
