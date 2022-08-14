@@ -24,9 +24,9 @@
     <!--   carousel  -->
     <v-col  cols="3" sm="12"   >
        <div >
-      <v-card elevation="24" max-width="500" :class="this.$vuetify.display.mobile ? 'mt-11 ml-1' : 'mt-11 ml-12'">
+      <v-card elevation="24" max-width="500" :class="mobile ? 'mt-11 ml-1' : 'mt-11 ml-12'">
         <v-carousel
-          :height="this.$vuetify.display.mobile ? 210 : 246"
+          :height="mobile ? 210 : 246"
           cycle
           :continuous="false"
           :show-arrows="false"
@@ -57,7 +57,8 @@
 
    <!--text effect -->
    <v-col>
-      <h1 :style="this.$vuetify.display.mobile ? 'font-size: 22px; float: left' : null" >Discover more Special Events...</h1>
+      <!-- <h1 :style="this.$vuetify.display.mobile ? 'font-size: 22px; float: left' : null" >Discover more Special Events...</h1> -->
+      <h1 :style="mobile ? 'font-size: 22px; float: left' : null" >Discover more Special Events...</h1>
    </v-col>
 
     <!--  section text  --> 
